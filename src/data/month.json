@@ -1,0 +1,51 @@
+ [
+  {
+    "day": 1,
+    "name": "January"
+  },
+  {
+    "day": 2,
+    "name": "February"
+  },
+  {
+    "day": 3,
+    "name": "March"
+  },
+  {
+    "day": 4,
+    "name": "April"
+
+  },
+  {
+    "day": 5,
+    "name": "May"
+  },
+  {
+    "day": 6,
+    "name": "June"
+  },
+  {
+    "day": 7,
+    "name": "July"
+  },
+  {
+    "day": 8,
+    "name": "August"
+  },
+  {
+    "day": 9,
+    "name": "September"
+  },
+  {
+    "day": 10,
+    "name": "October"
+  },
+  {
+    "day": 11,
+    "name": "November"
+  },
+  {
+    "day": 12,
+    "name": "December"
+  }
+]
