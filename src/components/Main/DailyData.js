@@ -1,33 +1,34 @@
 import React, {useEffect, useState} from "react";
-import {Button, Col, Container, Form, Row, Dropdown} from "react-bootstrap";
-import DayData from '../../data/dayData.json'
-import MonthData from "../../data/month.json"
-import YearData from "../../data/yearData.json"
-import AdanData from "../../data/adanData.json"
+import {Button, Col, Form, Row} from "react-bootstrap";
+import AdanData from "../../data/adanData.json";
+import DayData from "../../data/dayData.json";
+import MonthData from "../../data/month.json";
+import YearData from "../../data/yearData.json";
+import {deleteAdans, updateProductss} from "../../Api/AdanTime";
 import {isAuthenticated} from "../../utils/auth";
-import {addJummahs} from "../../Api/jummah";
 
-const AddJummah = () => {
-
+const DailyData = (allData) => {
+    const data = allData.data
     const [adanTime, setAdanTime] = useState({
         englishDay: '',
         englishMonth: '',
         englishYear: "",
-        prayer: [],
+        arabDay: '',
+        arabMonth: '',
+        arabYear: "",
+        timing: [],
     })
 
     const {
         englishDay, englishMonth, englishYear, prayer
     } = adanTime
-
     const [inputList, setInputList] = useState([{
-        label: "level",
-        khutba: "time",
-        imam: "name"
+        level: "",
+        startTime: "",
+        endTime: ""
     }]);
 
-    const {label, khutba, imam} = inputList;
-
+    const {level, startTime, endTime} = inputList;
 
 
     const handleInputChange = (e, index) => {
@@ -37,56 +38,73 @@ const AddJummah = () => {
         setInputList(list);
         setAdanTime({
             ...adanTime,
-            prayer: inputList
+            timing: inputList
         })
     };
 
 
-    // const handleRemoveClick = index => {
-    //     const list = [...inputList];
-    //     list.splice(index, 1);
-    //     setInputList(list);
-    // };
-    //
-    // const handleAddClick = () => {
-    //     setInputList([...inputList, {
-    //         label: "level",
-    //         khutba: "time",
-    //         imam: "name"
-    //     }])
-    // };
+    const handleRemoveClick = index => {
+        const list = [...inputList];
+        list.splice(index, 1);
+        setInputList(list);
+    };
 
+    const handleAddClick = () => {
+        setInputList([...inputList, {
+            level: "",
+            startTime: "",
+            endTime: ""
+        }])
+    };
+
+    useEffect(() => {
+        setAdanTime(data)
+        const timing = data.timing
+        setInputList(timing)
+        console.log(timing)
+        // timing && timing.map((data)=>{
+        //     setInputList(data)
+        // })
+    })
 
     const handleChange = (e, index) => {
-        const value = e.target.name === 'image' ? e.target.files[0] : e.target.value;
         setAdanTime({
             ...adanTime,
-            [e.target.name]: value,
+            [e.target.name]: e.target.value,
         })
     }
+    console.log(data)
 
-    function handleSubmit(e) {
+    function updateChange(e) {
         e.preventDefault();
-        addJummahs({ englishDay, englishMonth, englishYear, prayer, label, khutba, imam})
-            .then(response => {
-                isAuthenticated(response.data.token, () => {
-                    setAdanTime({englishDay: '',
-                        englishMonth: '',
-                        englishYear: "",
-                        prayer: inputList,
-                        success: true,
-                        label: "",
-                        khutba: "",
-                        imam: ""
-                    })
+        const id = data._id
+        console.log(id)
+        updateProductss(id, adanTime).then(res => {
+            isAuthenticated(res.data.token, () => {
+                setAdanTime({
+                    englishDay: '',
+                    englishMonth: '',
+                    englishYear: "",
+                    arabDay: '',
+                    arabMonth: '',
+                    arabYear: "",
+                    timing: [],
                 })
             })
-            .catch(err => console.log(err))
+        }).catch(err => console.log(err))
     }
-    console.log(adanTime)
+
+    function deleteAdan(e) {
+        e.preventDefault();
+        const id = data._id
+        deleteAdans(id).then(res => {
+            isAuthenticated(res.data.token)
+        }).catch(err => console.log(err))
+    }
+
     return (
-        <Container fluid>
-            <Form onSubmit={handleSubmit}>
+        <>
+            <Form>
                 <Row>
                     <Col>
                         <Form.Group className="mb-3" controlId="addGame">
@@ -140,16 +158,15 @@ const AddJummah = () => {
                         </Form.Group>
                     </Col>
                 </Row>
-
                 {inputList.map((x, i) => {
                     return (
                         <Row key={i}>
                             <Col>
                                 <Form.Group className="mb-3" controlId="addCategory">
                                     <Form.Label>Adan</Form.Label>
-                                    <Form.Control as="select" aria-label="Default select example"
-                                                  defaultValue="State..."
-                                                  name="label" value={label} onChange={e => handleInputChange(e, i)}>
+                                    <Form.Control as="select"
+                                                  defaultValue={x.level}
+                                                  name="level" value={level} onChange={e => handleInputChange(e, i)}>
                                         <option>Select Adan Name</option>
                                         {
                                             AdanData.map((data, index) => {
@@ -163,39 +180,45 @@ const AddJummah = () => {
                                 </Form.Group>
                             </Col> <Col>
                             <Form.Group className="mb-3" controlId="addCategory">
-                                <Form.Label>Khutba Time</Form.Label>
-                                <Form.Control type="option" name="khutba" placeholder="Start time"
-                                              value={khutba} onChange={e => handleInputChange(e, i)}/>
+                                <Form.Label>Start Time</Form.Label>
+                                <Form.Control type="option" name="startTime" placeholder={startTime}
+                                              defaultValue={x.startTime}
+                                              value={startTime} onChange={e => handleInputChange(e, i)}/>
                             </Form.Group>
                         </Col>
 
                             <Col className="btn-box">
                                 <Form.Group className="mb-3" controlId="addCategory">
-                                    <Form.Label>Imam</Form.Label>
-                                    <Form.Control type="Name" name="imam" placeholder="End time"
-                                                  value={imam} onChange={e => handleInputChange(e, i)}/>
+                                    <Form.Label>EndTime</Form.Label>
+                                    <Form.Control type="price" name="endTime" placeholder="End time"
+                                                  defaultValue={x.endTime}
+                                                  value={endTime} onChange={e => handleInputChange(e, i)}/>
                                 </Form.Group>
                             </Col>
-                            {/*<Col className="mt-4">*/}
-                            {/*    {inputList.length !== 1 && <Button*/}
-                            {/*        className="mr10"*/}
-                            {/*        onClick={() => handleRemoveClick(i)}>Remove</Button>}*/}
-                            {/*    {inputList.length - 1 === i && <Button key={i} onClick={handleAddClick}>Add</Button>}*/}
-                            {/*</Col>*/}
+                            <Col className="mt-4">
+                                {inputList.length !== 1 && <Button
+                                    className="mr10"
+                                    onClick={() => handleRemoveClick(i)}>Remove</Button>}
+                                {inputList.length - 1 === i && <Button key={i} onClick={handleAddClick}>Add</Button>}
+                            </Col>
                         </Row>
 
 
                     )
                         ;
                 })}
+                <div className='d-flex justify-content-around'>
 
-                <div>
-                    <Button type="submit" variant="primary">
-                        Add new prayer
-                    </Button>
+                    <div>
+                        <Button variant="outline-primary" onClick={deleteAdan}>Delete</Button>
+                    </div>
+                    <di>
+                        <Button variant="outline-primary" onClick={updateChange}>Update</Button>
+                    </di>
                 </div>
             </Form>
-        </Container>
+        </>
     )
 }
-export default AddJummah
+
+export default DailyData

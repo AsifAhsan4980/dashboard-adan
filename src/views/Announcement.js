@@ -1,86 +1,72 @@
 import React, {useEffect, useState} from "react";
 import {Button, Col, Container, Form, Row, Dropdown} from "react-bootstrap";
-import {isAuthenticated, userInfo} from "../utils/auth";
 import {addAnnouncement} from "../Api/Announcement";
+import {addEvent} from "../Api/Event";
+import AnnouncementData from "../components/Main/AnnouncementData";
 
 
 const Announcement = () => {
     const [adanTime, setAdanTime] = useState({
-        announcementName: '',
-        announcementBody: '',
-        // announcementImage: "",
-        announcementDate: ''
+        eventName: '',
+        eventtBody: '',
+        eventDate: '',
+        formData: '',
+        success: false
     })
 
     const {
-        announcementName, announcementBody, announcementImage, announcementDate
+        eventName, eventBody, eventDate, formData
     } = adanTime
 
-    // useEffect(() => {
-    //     setAdanTime({
-    //         ...adanTime,
-    //         announcementImage: new FormData()
-    //     })
-    // }, [])
+    useEffect(() => {
+        setAdanTime({
+            ...adanTime,
+            formData: new FormData()
+        })
+    }, [])
 
     const handleChange = (e, index) => {
         const value = e.target.name === 'image' ? e.target.files[0] : e.target.value;
-        // announcementImage.set(e.target.name, value);
+        formData.set(e.target.name, value);
         setAdanTime({
             ...adanTime,
             [e.target.name]: value,
         })
     }
 
-    // const handleSubmit = e => {
-    //     e.preventDefault();
-    //     setAdanTime({
-    //         ...adanTime
-    //     })
-    //     const { token } = userInfo();
-    //     addAnnouncement(token, setAdanTime)
-    //         .then(response => {
-    //
-    //             setAdanTime({
-    //                 announcementName: '',
-    //                 announcementBody: '',
-    //                 // announcementImage: "",
-    //                 announcementDate: '',
-    //                 success: true
-    //             })
-    //         })
-    //         .catch(err => console.log(err))
-    // }
-    function handleSubmit(e) {
+    const handleSubmit = e => {
         e.preventDefault();
-        addAnnouncement({ announcementName, announcementBody, announcementDate})
+        setAdanTime({
+            ...adanTime
+        })
+
+        addAnnouncement(formData)
             .then(response => {
-                isAuthenticated(response.data.token, () => {
-                    setAdanTime({announcementName: '',
-                        announcementBody: '',
-                        announcementDate: "",
-                    })
+                setAdanTime({
+                    eventName: '',
+                    eventBody: '',
+                    eventDate: '',
+                    success: true
                 })
             })
             .catch(err => console.log(err))
     }
-    console.log(adanTime)
     return (
         <Container fluid>
             <Form onSubmit={handleSubmit}>
                 <Row>
                     <Col>
                         <Form.Group className="mb-3" controlId="addCategory">
-                            <Form.Label>Announcement name</Form.Label>
-                            <Form.Control type="price" name="announcementName" placeholder="End time"
-                                          value={announcementName} onChange={handleChange}/>
+                            <Form.Label>Event name</Form.Label>
+                            <Form.Control type="price" name="eventName" placeholder="End time"
+                                          value={eventName} onChange={handleChange}/>
                         </Form.Group>
                     </Col>
                     <Col>
                         <Form.Group className="mb-3" controlId="addCategory">
-                            <Form.Label>Announcement Date</Form.Label>
-                            <Form.Control type="price" name="announcementDate" placeholder="End time"
-                                          value={announcementDate}onChange={handleChange}/>
+                            <Form.Label>Event Date</Form.Label>
+                            <Form.Control type="price" name="eventDate" placeholder="End time"
+                                          value={eventDate} onChange={handleChange}/>
                         </Form.Group>
                     </Col>
                 </Row>
@@ -88,24 +74,27 @@ const Announcement = () => {
                     <Col>
                         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
                             <Form.Label>Description</Form.Label>
-                            <Form.Control as="textarea" rows={3} value={announcementBody} name="announcementBody" onChange={handleChange} />
+                            <Form.Control as="textarea" rows={3} value={eventBody} name="eventBody"
+                                          onChange={handleChange}/>
                         </Form.Group>
                     </Col>
                     <Col>
                         <Form.Group controlId="formFile" className="mb-3">
                             <Form.Label>Default file input example</Form.Label>
-                            <Form.Control type="file" name="image" onChange={handleChange} />
+                            <Form.Control type="file" name="image" onChange={handleChange}/>
                         </Form.Group>
                     </Col>
                 </Row>
 
                 <div>
                     <Button type="submit" variant="primary">
-                        Add new prayer
+                        Add new Announcement
                     </Button>
                 </div>
             </Form>
+            <AnnouncementData/>
         </Container>
     )
 }
+
 export default Announcement

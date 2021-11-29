@@ -1,33 +1,35 @@
 import React, {useEffect, useState} from "react";
-import {Button, Col, Container, Form, Row, Dropdown} from "react-bootstrap";
-import DayData from '../../data/dayData.json'
-import MonthData from "../../data/month.json"
-import YearData from "../../data/yearData.json"
-import AdanData from "../../data/adanData.json"
+import {Button, Col, Form, Row} from "react-bootstrap";
+import AdanData from "../../data/adanData.json";
+import DayData from "../../data/dayData.json";
+import MonthData from "../../data/month.json";
+import YearData from "../../data/yearData.json";
+import {deleteAdans, updateProductss} from "../../Api/AdanTime";
 import {isAuthenticated} from "../../utils/auth";
-import {addJummahs} from "../../Api/jummah";
+import {deleteJummah, getOneJummah, updateJummah} from "../../Api/jummah";
 
-const AddJummah = () => {
-
+const JummahDatas = (allData) => {
+    const data = allData.data
     const [adanTime, setAdanTime] = useState({
         englishDay: '',
         englishMonth: '',
         englishYear: "",
+        arabDay: '',
+        arabMonth: '',
+        arabYear: "",
         prayer: [],
     })
 
     const {
         englishDay, englishMonth, englishYear, prayer
     } = adanTime
-
     const [inputList, setInputList] = useState([{
-        label: "level",
-        khutba: "time",
-        imam: "name"
+        label: "",
+        khutba: "",
+        imam: ""
     }]);
 
     const {label, khutba, imam} = inputList;
-
 
 
     const handleInputChange = (e, index) => {
@@ -37,11 +39,11 @@ const AddJummah = () => {
         setInputList(list);
         setAdanTime({
             ...adanTime,
-            prayer: inputList
+            timing: inputList
         })
     };
 
-
+    //
     // const handleRemoveClick = index => {
     //     const list = [...inputList];
     //     list.splice(index, 1);
@@ -50,43 +52,57 @@ const AddJummah = () => {
     //
     // const handleAddClick = () => {
     //     setInputList([...inputList, {
-    //         label: "level",
-    //         khutba: "time",
-    //         imam: "name"
+    //         label: "",
+    //         khutba: "",
+    //         imam: ""
     //     }])
     // };
 
+    useEffect(() => {
+        setAdanTime(data)
+        const prayer = data.prayer
+        setInputList(prayer)
+        console.log(prayer)
+    })
 
     const handleChange = (e, index) => {
-        const value = e.target.name === 'image' ? e.target.files[0] : e.target.value;
         setAdanTime({
             ...adanTime,
-            [e.target.name]: value,
+            [e.target.name]: e.target.value,
         })
     }
+    // console.log(data)
 
-    function handleSubmit(e) {
+    function updateChange(e) {
         e.preventDefault();
-        addJummahs({ englishDay, englishMonth, englishYear, prayer, label, khutba, imam})
-            .then(response => {
-                isAuthenticated(response.data.token, () => {
-                    setAdanTime({englishDay: '',
-                        englishMonth: '',
-                        englishYear: "",
-                        prayer: inputList,
-                        success: true,
-                        label: "",
-                        khutba: "",
-                        imam: ""
-                    })
+        const id = data._id
+        console.log(id)
+        updateJummah(id, adanTime).then(res => {
+            isAuthenticated(res.data.token, () => {
+                setAdanTime({
+                    englishDay: '',
+                    englishMonth: '',
+                    englishYear: "",
+                    arabDay: '',
+                    arabMonth: '',
+                    arabYear: "",
+                    prayer: [],
                 })
             })
-            .catch(err => console.log(err))
+        }).catch(err => console.log(err))
     }
-    console.log(adanTime)
+
+    function deleteAdan(e) {
+        e.preventDefault();
+        const id = data._id
+        deleteJummah(id).then(res => {
+            isAuthenticated(res.data.token)
+        }).catch(err => console.log(err))
+    }
+
     return (
-        <Container fluid>
-            <Form onSubmit={handleSubmit}>
+        <>
+            <Form>
                 <Row>
                     <Col>
                         <Form.Group className="mb-3" controlId="addGame">
@@ -140,15 +156,14 @@ const AddJummah = () => {
                         </Form.Group>
                     </Col>
                 </Row>
-
                 {inputList.map((x, i) => {
                     return (
                         <Row key={i}>
                             <Col>
                                 <Form.Group className="mb-3" controlId="addCategory">
                                     <Form.Label>Adan</Form.Label>
-                                    <Form.Control as="select" aria-label="Default select example"
-                                                  defaultValue="State..."
+                                    <Form.Control as="select"
+                                                  defaultValue={x.label}
                                                   name="label" value={label} onChange={e => handleInputChange(e, i)}>
                                         <option>Select Adan Name</option>
                                         {
@@ -163,16 +178,18 @@ const AddJummah = () => {
                                 </Form.Group>
                             </Col> <Col>
                             <Form.Group className="mb-3" controlId="addCategory">
-                                <Form.Label>Khutba Time</Form.Label>
-                                <Form.Control type="option" name="khutba" placeholder="Start time"
+                                <Form.Label>Start Time</Form.Label>
+                                <Form.Control type="option" name="khutba" placeholder={khutba}
+                                              defaultValue={x.khutba}
                                               value={khutba} onChange={e => handleInputChange(e, i)}/>
                             </Form.Group>
                         </Col>
 
                             <Col className="btn-box">
                                 <Form.Group className="mb-3" controlId="addCategory">
-                                    <Form.Label>Imam</Form.Label>
-                                    <Form.Control type="Name" name="imam" placeholder="End time"
+                                    <Form.Label>EndTime</Form.Label>
+                                    <Form.Control type="price" name="imam" placeholder="End time"
+                                                  defaultValue={x.imam}
                                                   value={imam} onChange={e => handleInputChange(e, i)}/>
                                 </Form.Group>
                             </Col>
@@ -188,14 +205,18 @@ const AddJummah = () => {
                     )
                         ;
                 })}
+                <div className='d-flex justify-content-around'>
 
-                <div>
-                    <Button type="submit" variant="primary">
-                        Add new prayer
-                    </Button>
+                    <div>
+                        <Button variant="outline-primary" onClick={deleteAdan}>Delete</Button>
+                    </div>
+                    <di>
+                        <Button variant="outline-primary" onClick={updateChange}>Update</Button>
+                    </di>
                 </div>
             </Form>
-        </Container>
+        </>
     )
 }
-export default AddJummah
+
+export default JummahDatas

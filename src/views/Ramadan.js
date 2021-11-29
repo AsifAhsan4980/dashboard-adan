@@ -8,6 +8,11 @@ import {addAdans} from "../Api/AdanTime";
 import {isAuthenticated} from "../utils/auth";
 import AddRamadan from "../components/Main/addRamadan";
 import './product.css'
+import {getOneJummah} from "../Api/jummah";
+import AddJummah from "../components/Main/AddJummah";
+import JummahDatas from "../components/Main/JummaData";
+import {getOneRamadan} from "../Api/Ramadan";
+import RamadanData from "../components/Main/RamadanData";
 
 
 const Ramadan = () => {
@@ -15,83 +20,91 @@ const Ramadan = () => {
         englishDay: '',
         englishMonth: '',
         englishYear: "",
-        timing: [],
+        prayer: [],
     })
 
     const {
-        englishDay, englishMonth, englishYear, timing
+        englishDay, englishMonth, englishYear, prayer
     } = adanTime
 
     const [inputList, setInputList] = useState([{
-        level: "level",
-        startTime: "time",
-        endTime: "time"
+        shehriIn: "level",
+        shehriOut: "time",
+        Iftar: "time"
     }]);
 
     const [show, setShow] = useState(false);
-    const {lstartTime, endTime} = inputList;
-
+    const {shehriIn,shehriOut,Iftar} = inputList;
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    const handleInputChange = (e, index) => {
-        const {name, value} = e.target;
-        const list = [...inputList];
-        list[index][name] = value;
-        setInputList(list);
-        setAdanTime({
-            ...adanTime,
-            timing: inputList
-        })
-    };
 
 
-    const handleRemoveClick = index => {
-        const list = [...inputList];
-        list.splice(index, 1);
-        setInputList(list);
-    };
-
-    const handleAddClick = () => {
-        setInputList([...inputList, {
-            level: "level",
-            startTime: "time",
-            endTime: "time"
-        }])
-    };
+    // const handleInputChange = (e, index) => {
+    //     const {name, value} = e.target;
+    //     const list = [...inputList];
+    //     list[index][name] = value;
+    //     setInputList(list);
+    //     setAdanTime({
+    //         ...adanTime,
+    //         prayer: inputList
+    //     })
+    // };
+    //
+    //
+    // const handleRemoveClick = index => {
+    //     const list = [...inputList];
+    //     list.splice(index, 1);
+    //     setInputList(list);
+    // };
+    //
+    // const handleAddClick = () => {
+    //     setInputList([...inputList, {
+    //         level: "level",
+    //         startTime: "time",
+    //         endTime: "time"
+    //     }])
+    // };
 
 
     const handleChange = (e, index) => {
-        const value = e.target.name === 'image' ? e.target.files[0] : e.target.value;
         setAdanTime({
             ...adanTime,
-            [e.target.name]: value,
+            [e.target.name]: e.target.value
         })
     }
 
-    function handleSubmit(e) {
-        e.preventDefault();
-        addAdans({ englishDay, englishMonth, englishYear, timing, level, startTime,endTime})
-            .then(response => {
-                isAuthenticated(response.data.token, () => {
-                    setAdanTime({englishDay: '',
-                        englishMonth: '',
-                        englishYear: "",
-                        timing: inputList,
-                        level: "",
-                        startTime: "",
-                        endTime: "",
-                        success: true,
-                    })
-                })
+
+
+    function search() {
+
+        const id1 = englishDay
+        const id2 = englishMonth
+        const id3 = englishYear
+        console.log(id3)
+        if (id1, id2, id3) {
+            getOneRamadan(id1, id2, id3).then(res => {
+                console.log("data")
+                try {
+                    const allData = res.data[0]
+                    const prayer = allData.prayer[0]
+                    setAdanTime(allData)
+                    setInputList(prayer)
+                    console.log(adanTime)
+                } catch (err) {
+                    console.log(err)
+                }
+
             })
-            .catch(err => console.log(err))
+
+        }
     }
+    // console.log(adanTime)
 
     return (
         <>
             <Button variant="primary" className="mb-4" onClick={handleShow}>
-                Add Jummah
+                Add Ramadan
             </Button>
 
             <Modal show={show} onHide={handleClose}>
@@ -99,7 +112,7 @@ const Ramadan = () => {
                     <Modal.Title>Modal heading</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <AddRamadan/>
+                    <AddJummah/>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
@@ -110,14 +123,16 @@ const Ramadan = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
-            <Form onSubmit={handleSubmit}>
-                <Form.Label className="text-center">Update Adan</Form.Label>
+            <Form
+            >
+                <Form.Label className="text-center">Update Ramadan</Form.Label>
                 <Row>
                     <Col>
                         <Form.Group className="mb-3" controlId="addGame">
                             <Form.Label>Add Day</Form.Label>
                             <Form.Control as="select" aria-label="Default select example" defaultValue="State..."
-                                          name="type">
+                                          name="englishDay" value={englishDay} onChange={handleChange}>
+                                <option className="text-black">Select</option>
                                 {
                                     DayData.map((data, index) => {
                                             return (
@@ -133,12 +148,12 @@ const Ramadan = () => {
                         <Form.Group className="mb-3" controlId="addCategory">
                             <Form.Label>Add Month</Form.Label>
                             <Form.Control as="select" aria-label="Default select example" defaultValue="State..."
-                                          name="type">
-
+                                          name="englishMonth" value={englishMonth} onChange={handleChange}>
+                                <option className="text-black">Select</option>
                                 {
                                     MonthData.map((data, index) => {
                                             return (
-                                                <option key={index} className="text-black">{data.name}</option>
+                                                <option key={index} className="text-black">{data.day}</option>
                                             )
                                         }
                                     )
@@ -150,7 +165,8 @@ const Ramadan = () => {
                         <Form.Group className="mb-3" controlId="addCategory">
                             <Form.Label>Add Year</Form.Label>
                             <Form.Control as="select" aria-label="Default select example" defaultValue="State..."
-                                          name="type">
+                                          name="englishYear" value={englishYear} onChange={handleChange}>
+                                <option className="text-black">Select</option>
                                 {
                                     YearData.map((data, index) => {
                                             return (
@@ -163,74 +179,11 @@ const Ramadan = () => {
                         </Form.Group>
                     </Col>
                 </Row>
-                <Button variant="primary" className="mb-4">
+                <Button variant="primary" className="mb-4" onClick={search}>
                     Search
                 </Button>
             </Form>
-            <Card>
-                <Card.Body>
-                    {inputList.map((x, i) => {
-                        return (
-                            <Row key={i}>
-                                <Col>
-                                    <Form.Group className="mb-3" controlId="addCategory">
-                                        <Form.Label>Adan</Form.Label>
-                                        <Form.Control as="select" aria-label="Default select example"
-                                                      defaultValue="State..."
-                                                      name="type">
-                                            {
-                                                AdanData.map((data, index) => {
-                                                        return (
-                                                            <option key={index} className="text-black">{data.label}</option>
-                                                        )
-                                                    }
-                                                )
-                                            }
-                                        </Form.Control>
-                                    </Form.Group>
-                                </Col> <Col>
-                                <Form.Group className="mb-3" controlId="addCategory">
-                                    <Form.Label>Start Time</Form.Label>
-                                    <Form.Control type="option" name="option" placeholder="Start time"
-                                                  onChange={e => handleInputChange(e, i)}/>
-                                </Form.Group>
-                            </Col>
-
-                                <Col className="btn-box">
-                                    <Form.Group className="mb-3" controlId="addCategory">
-                                        <Form.Label>EndTime</Form.Label>
-                                        <Form.Control type="price" name="price" placeholder="End time"
-                                                      onChange={e => handleInputChange(e, i)}/>
-                                    </Form.Group>
-                                </Col>
-                                <Col className="mt-4">
-                                    {inputList.length !== 1 && <Button
-                                        className="mr10"
-                                        onClick={() => handleRemoveClick(i)}>Remove</Button>}
-                                    {inputList.length - 1 === i &&
-                                    <Button key={i} onClick={handleAddClick}>Add</Button>}
-                                </Col>
-                            </Row>
-
-
-                        )
-                            ;
-                    })}
-
-                    <div className='d-flex justify-content-around'>
-                        <div>
-                            <Button variant="primary" className="mb-4">
-                                Delete
-                            </Button>
-                        </div>
-                        <div>
-                            <Button variant="primary" className="mb-4">
-                                Update
-                            </Button>
-                        </div>
-                    </div>
-                </Card.Body>
-            </Card>
+            <RamadanData data={adanTime}/>
         </>
     )
 }

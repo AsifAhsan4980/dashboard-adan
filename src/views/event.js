@@ -2,72 +2,62 @@ import React, {useEffect, useState} from "react";
 import {Button, Col, Container, Form, Row, Dropdown} from "react-bootstrap";
 import {isAuthenticated, userInfo} from "../utils/auth";
 import {addEvent} from "../Api/Event";
+import {addAdans} from "../Api/AdanTime";
+import EventData from "../components/Main/EventData";
+import {showSuccess} from "../utils/message";
 
 
 const Event = () => {
+    const [success, setSuccess] = useState(false)
+    const [message, setMessage] = useState('');
     const [adanTime, setAdanTime] = useState({
         eventName: '',
         eventBody: '',
-        // announcementImage: "",
-        eventDate: ''
+        eventDate: '',
+        formData: '',
+        success: false
     })
 
     const {
-        eventName, eventBody, eventImage, eventDate
+        eventName, eventBody,  eventDate, formData
     } = adanTime
 
-    // useEffect(() => {
-    //     setAdanTime({
-    //         ...adanTime,
-    //         announcementImage: new FormData()
-    //     })
-    // }, [])
+    useEffect(() => {
+        setAdanTime({
+            ...adanTime,
+            formData: new FormData()
+        })
+    }, [])
 
     const handleChange = (e, index) => {
         const value = e.target.name === 'image' ? e.target.files[0] : e.target.value;
-        // announcementImage.set(e.target.name, value);
+        formData.set(e.target.name, value);
         setAdanTime({
             ...adanTime,
             [e.target.name]: value,
         })
     }
 
-    // const handleSubmit = e => {
-    //     e.preventDefault();
-    //     setAdanTime({
-    //         ...adanTime
-    //     })
-    //     const { token } = userInfo();
-    //     addAnnouncement(token, setAdanTime)
-    //         .then(response => {
-    //
-    //             setAdanTime({
-    //                 announcementName: '',
-    //                 announcementBody: '',
-    //                 // announcementImage: "",
-    //                 announcementDate: '',
-    //                 success: true
-    //             })
-    //         })
-    //         .catch(err => console.log(err))
-    // }
-    function handleSubmit(e) {
+    const handleSubmit = e => {
         e.preventDefault();
-        addEvent({ eventName, eventBody, eventImage, eventDate})
+        setAdanTime({
+            ...adanTime
+        })
+
+        addEvent( formData)
             .then(response => {
-                isAuthenticated(response.data.token, () => {
-                    setAdanTime({ eventName: '',
-                        eventBody: '',
-                        // announcementImage: "",
-                        eventDate: ''
-                    })
+                setAdanTime({
+                    eventName: '',
+                    eventBody: '',
+                    eventDate: '',
+                    success: true
                 })
             })
             .catch(err => console.log(err))
     }
-    console.log(adanTime)
     return (
         <Container fluid>
+            {showSuccess(success, message)}
             <Form onSubmit={handleSubmit}>
                 <Row>
                     <Col>
@@ -102,10 +92,15 @@ const Event = () => {
 
                 <div>
                     <Button type="submit" variant="primary">
-                        Add new prayer
+                        Add new Event
                     </Button>
                 </div>
             </Form>
+            <div className='mt-4'>
+                <div className="text-center">All Events</div>
+                <EventData />
+            </div>
+
         </Container>
     )
 }

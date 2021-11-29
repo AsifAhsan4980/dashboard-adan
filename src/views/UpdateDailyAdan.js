@@ -1,12 +1,13 @@
-import React, {useEffect, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import {Button, Card, Row, Col, Form, Modal} from "react-bootstrap";
 import AddDailyAdan from "../components/Main/AddDailyAdan";
 import DayData from '../data/dayData.json'
 import MonthData from "../data/month.json"
 import YearData from "../data/yearData.json"
-import AdanData from "../data/adanData.json"
-import {addAdans} from "../Api/AdanTime";
+import {addAdans, getOneAdan} from "../Api/AdanTime";
 import {isAuthenticated} from "../utils/auth";
+
+import DailyData from "../components/Main/DailyData";
 
 
 const UpdateDailyAdan = () => {
@@ -30,9 +31,10 @@ const UpdateDailyAdan = () => {
     const [show, setShow] = useState(false);
     const {level, startTime, endTime} = inputList;
 
-
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+
     const handleInputChange = (e, index) => {
         const {name, value} = e.target;
         const list = [...inputList];
@@ -61,19 +63,19 @@ const UpdateDailyAdan = () => {
 
 
     const handleChange = (e, index) => {
-        const value = e.target.name === 'image' ? e.target.files[0] : e.target.value;
         setAdanTime({
             ...adanTime,
-            [e.target.name]: value,
+            [e.target.name]: e.target.value
         })
     }
 
     function handleSubmit(e) {
         e.preventDefault();
-        addAdans({ englishDay, englishMonth, englishYear, timing, level, startTime,endTime})
+        addAdans({englishDay, englishMonth, englishYear, timing, level, startTime, endTime})
             .then(response => {
                 isAuthenticated(response.data.token, () => {
-                    setAdanTime({englishDay: '',
+                    setAdanTime({
+                        englishDay: '',
                         englishMonth: '',
                         englishYear: "",
                         timing: inputList,
@@ -85,6 +87,31 @@ const UpdateDailyAdan = () => {
                 })
             })
             .catch(err => console.log(err))
+    }
+
+
+
+    function search() {
+
+        const id1 = englishDay
+        const id2 = englishMonth
+        const id3 = englishYear
+        if (id1, id2, id3) {
+            getOneAdan(id1, id2, id3).then(res => {
+
+                try {
+                 const allData = res.data[0]
+                    const timing = allData.timing
+                    setAdanTime(allData)
+                    setInputList(timing)
+                    console.log(adanTime)
+                } catch (err) {
+                    console.log(err)
+                }
+
+            })
+
+        }
     }
 
     return (
@@ -104,9 +131,6 @@ const UpdateDailyAdan = () => {
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleClose}>
-                        Save Changes
-                    </Button>
                 </Modal.Footer>
             </Modal>
             <Form onSubmit={handleSubmit}>
@@ -116,7 +140,8 @@ const UpdateDailyAdan = () => {
                         <Form.Group className="mb-3" controlId="addGame">
                             <Form.Label>Add Day</Form.Label>
                             <Form.Control as="select" aria-label="Default select example" defaultValue="State..."
-                                          name="type">
+                                          name="englishDay" value={englishDay} onChange={handleChange}>
+                                <option className="text-black">Select</option>
                                 {
                                     DayData.map((data, index) => {
                                             return (
@@ -132,12 +157,12 @@ const UpdateDailyAdan = () => {
                         <Form.Group className="mb-3" controlId="addCategory">
                             <Form.Label>Add Month</Form.Label>
                             <Form.Control as="select" aria-label="Default select example" defaultValue="State..."
-                                          name="type">
-
+                                          name="englishMonth" value={englishMonth} onChange={handleChange}>
+                                <option className="text-black">Select</option>
                                 {
                                     MonthData.map((data, index) => {
                                             return (
-                                                <option key={index} className="text-black">{data.name}</option>
+                                                <option key={index} className="text-black">{data.day}</option>
                                             )
                                         }
                                     )
@@ -149,7 +174,8 @@ const UpdateDailyAdan = () => {
                         <Form.Group className="mb-3" controlId="addCategory">
                             <Form.Label>Add Year</Form.Label>
                             <Form.Control as="select" aria-label="Default select example" defaultValue="State..."
-                                          name="type">
+                                          name="englishYear" value={englishYear} onChange={handleChange}>
+                                <option className="text-black">Select</option>
                                 {
                                     YearData.map((data, index) => {
                                             return (
@@ -162,74 +188,11 @@ const UpdateDailyAdan = () => {
                         </Form.Group>
                     </Col>
                 </Row>
-                <Button variant="primary" className="mb-4">
+                <Button variant="primary" className="mb-4" onClick={search}>
                     Search
                 </Button>
             </Form>
-            <Card>
-                <Card.Body>
-                    {inputList.map((x, i) => {
-                        return (
-                            <Row key={i}>
-                                <Col>
-                                    <Form.Group className="mb-3" controlId="addCategory">
-                                        <Form.Label>Adan</Form.Label>
-                                        <Form.Control as="select" aria-label="Default select example"
-                                                      defaultValue="State..."
-                                                      name="type">
-                                            {
-                                                AdanData.map((data, index) => {
-                                                        return (
-                                                            <option key={index} className="text-black">{data.label}</option>
-                                                        )
-                                                    }
-                                                )
-                                            }
-                                        </Form.Control>
-                                    </Form.Group>
-                                </Col> <Col>
-                                <Form.Group className="mb-3" controlId="addCategory">
-                                    <Form.Label>Start Time</Form.Label>
-                                    <Form.Control type="option" name="option" placeholder="Start time"
-                                                   onChange={e => handleInputChange(e, i)}/>
-                                </Form.Group>
-                            </Col>
-
-                                <Col className="btn-box">
-                                    <Form.Group className="mb-3" controlId="addCategory">
-                                        <Form.Label>EndTime</Form.Label>
-                                        <Form.Control type="price" name="price" placeholder="End time"
-                                                      onChange={e => handleInputChange(e, i)}/>
-                                    </Form.Group>
-                                </Col>
-                                <Col className="mt-4">
-                                    {inputList.length !== 1 && <Button
-                                        className="mr10"
-                                        onClick={() => handleRemoveClick(i)}>Remove</Button>}
-                                    {inputList.length - 1 === i &&
-                                    <Button key={i} onClick={handleAddClick}>Add</Button>}
-                                </Col>
-                            </Row>
-
-
-                        )
-                            ;
-                    })}
-
-                    <div className='d-flex justify-content-around'>
-                        <div>
-                            <Button variant="primary" className="mb-4">
-                                Delete
-                            </Button>
-                        </div>
-                        <div>
-                            <Button variant="primary" className="mb-4">
-                                Update
-                            </Button>
-                        </div>
-                    </div>
-                </Card.Body>
-            </Card>
+            <DailyData data={adanTime}/>
         </>
     )
 }

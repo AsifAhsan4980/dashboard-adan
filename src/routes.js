@@ -21,6 +21,7 @@ import JummahData from "./views/JummahData";
 import Ramadan from "./views/Ramadan";
 import Announcement from "./views/Announcement";
 import Event from './views/event'
+import Banner from "./views/Banner";
 
 
 const dashboardRoutes = [
@@ -74,13 +75,13 @@ const dashboardRoutes = [
     component: Event,
     layout: "/admin",
   },
-  // {
-  //   path: "/notifications",
-  //   name: "Notifications",
-  //   icon: "nc-icon nc-bell-55",
-  //   component: Notifications,
-  //   layout: "/admin",
-  // },
+  {
+    path: "/banner",
+    name: "Banner",
+    icon: "nc-icon nc-bell-55",
+    component: Banner,
+    layout: "/admin",
+  },
 ];
 
 export default dashboardRoutes;

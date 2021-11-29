@@ -21,9 +21,9 @@ const AddDailyAdan = () => {
     } = adanTime
 
     const [inputList, setInputList] = useState([{
-        level: "level",
-        startTime: "time",
-        endTime: "time"
+        level: " ",
+        startTime: " ",
+        endTime: " "
     }]);
 
     const {level, startTime, endTime} = inputList;
@@ -50,9 +50,9 @@ const AddDailyAdan = () => {
 
     const handleAddClick = () => {
         setInputList([...inputList, {
-            level: "level",
-            startTime: "time",
-            endTime: "time"
+            level: " ",
+            startTime: " ",
+            endTime: " "
         }])
     };
 
