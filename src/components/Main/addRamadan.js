@@ -179,7 +179,7 @@ const AddRamadan = () => {
 
                 <div>
                     <Button type="submit" variant="primary">
-                        Add new prayer
+                        Add new Ramadan
                     </Button>
                 </div>
             </Form>

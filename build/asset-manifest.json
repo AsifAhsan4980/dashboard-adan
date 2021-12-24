@@ -1,0 +1,32 @@
+{
+  "files": {
+    "main.css": "/static/css/main.0c181eca.chunk.css",
+    "main.js": "/static/js/main.95b933de.chunk.js",
+    "main.js.map": "/static/js/main.95b933de.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.5c61ba3d.js",
+    "runtime-main.js.map": "/static/js/runtime-main.5c61ba3d.js.map",
+    "static/css/2.17df6bf0.chunk.css": "/static/css/2.17df6bf0.chunk.css",
+    "static/js/2.4da20c6c.chunk.js": "/static/js/2.4da20c6c.chunk.js",
+    "static/js/2.4da20c6c.chunk.js.map": "/static/js/2.4da20c6c.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/2.17df6bf0.chunk.css.map": "/static/css/2.17df6bf0.chunk.css.map",
+    "static/css/main.0c181eca.chunk.css.map": "/static/css/main.0c181eca.chunk.css.map",
+    "static/js/2.4da20c6c.chunk.js.LICENSE.txt": "/static/js/2.4da20c6c.chunk.js.LICENSE.txt",
+    "static/js/main.95b933de.chunk.js.LICENSE.txt": "/static/js/main.95b933de.chunk.js.LICENSE.txt",
+    "static/media/MDQ_Logo_Text_White.png": "/static/media/MDQ_Logo_Text_White.7a19b7d1.png",
+    "static/media/all.min.css": "/static/media/fa-solid-900.f4f93856.woff",
+    "static/media/light-bootstrap-dashboard-react.scss?v=2.0.0": "/static/media/nucleo-icons.e8827b8a.svg",
+    "static/media/reactlogo.55f6660b.png": "/static/media/reactlogo.55f6660b.png",
+    "static/media/sidebar-1.2ea74e53.jpg": "/static/media/sidebar-1.2ea74e53.jpg",
+    "static/media/sidebar-2.00b17713.jpg": "/static/media/sidebar-2.00b17713.jpg",
+    "static/media/sidebar-3.9992d0ce.jpg": "/static/media/sidebar-3.9992d0ce.jpg",
+    "static/media/sidebar-4.b7eb4d1b.jpg": "/static/media/sidebar-4.b7eb4d1b.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.5c61ba3d.js",
+    "static/css/2.17df6bf0.chunk.css",
+    "static/js/2.4da20c6c.chunk.js",
+    "static/css/main.0c181eca.chunk.css",
+    "static/js/main.95b933de.chunk.js"
+  ]
+}

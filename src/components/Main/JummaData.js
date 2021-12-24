@@ -178,7 +178,7 @@ const JummahDatas = (allData) => {
                                 </Form.Group>
                             </Col> <Col>
                             <Form.Group className="mb-3" controlId="addCategory">
-                                <Form.Label>Start Time</Form.Label>
+                                <Form.Label>Khutba Time</Form.Label>
                                 <Form.Control type="option" name="khutba" placeholder={khutba}
                                               defaultValue={x.khutba}
                                               value={khutba} onChange={e => handleInputChange(e, i)}/>
@@ -187,7 +187,7 @@ const JummahDatas = (allData) => {
 
                             <Col className="btn-box">
                                 <Form.Group className="mb-3" controlId="addCategory">
-                                    <Form.Label>EndTime</Form.Label>
+                                    <Form.Label>Imam Name</Form.Label>
                                     <Form.Control type="price" name="imam" placeholder="End time"
                                                   defaultValue={x.imam}
                                                   value={imam} onChange={e => handleInputChange(e, i)}/>

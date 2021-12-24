@@ -11,7 +11,6 @@ const App = () => {
             <Switch>
                 <Route path="/admin" render={(props) => <AdminLayout {...props} />}/>
                 <Route path='/' component={Login}/>
-
             </Switch>
         </AuthProvider>
     )

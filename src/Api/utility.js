@@ -15,7 +15,7 @@ import axios from "axios";
 
 export const addBanners = (token,addBanner) => {
 
-    return axios.post("http://localhost:3001/admin/banner", addBanner, {
+    return axios.post("http://18.217.131.163:8989/admin/banner", addBanner, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`

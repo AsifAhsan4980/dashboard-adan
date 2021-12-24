@@ -43,13 +43,13 @@ function Sidebar({ color, image, routes }) {
           >
             <div className="logo-img">
               <img
-                src={require("assets/img/reactlogo.png").default}
+                src={require("../../MDQ_Logo_Text_White.png").default}
                 alt="..."
               />
             </div>
           </a>
-          <a className="simple-text" href="http://www.creative-tim.com">
-            Creative Tim
+          <a className="simple-text" href="#">
+            Masjid Darul Quran
           </a>
         </div>
         <Nav>

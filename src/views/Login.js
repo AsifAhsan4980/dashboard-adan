@@ -44,34 +44,34 @@ const Login = () => {
             <div className="mx-auto" data-v-791b20d9>
                 <div data-v-791b20d9>
                     <section className="flex flex-col md:flex-row items-center md:justify-center py-10 md:py-6" data-v-791b20d9>
-                        <div class="bg-white w-full md:w-[450px] px-6 lg:px-8 flex items-start py-12 justify-center relative flex-shrink">
-                            <div class="w-full h-full">
-                                <h1 class="text-xl md:text-2xl font-bold leading-tight">
+                        <div className="bg-white w-full md:w-[450px] px-6 lg:px-8 flex items-start py-12 justify-center relative flex-shrink">
+                            <div className="w-full h-full">
+                                <h1 className="text-xl md:text-2xl font-bold leading-tight">
                                     Log in to your account
                                 </h1>
                                 <Form onSubmit={handleSubmit} method="post" class="mt-6">
-                                    <div><label class="block text-gray-700">Email Address</label>
+                                    <div><label className="block text-gray-700">Email Address</label>
                                         <input type="email" name="email" className="form-control" placeholder="Enter Email" value={email} required onChange={handleChange} autofocus="autofocus"
                                                autoComplete={true}
-                                               class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-primary-500 focus:bg-white focus:outline-none"/>
+                                               className="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-primary-500 focus:bg-white focus:outline-none"/>
                                     </div>
 
-                                    <div class="mt-4"><label class="block text-gray-700">Password</label> <input
+                                    <div className="mt-4"><label className="block text-gray-700">Password</label> <input
                                         type="password" name="password" className="form-control" value={password} required onChange={handleChange} placeholder="Enter Password" class="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-primary-500
             focus:bg-white focus:outline-none"/></div>
 
-                                    <div class="text-right mt-2"><a href="forgot-password.html"
-                                                                    class="text-sm font-semibold text-gray-700 hover:text-primary-700 focus:text-primary-700">Forgot
+                                    <div className="text-right mt-2"><a href="forgot-password.html"
+                                                                        className="text-sm font-semibold text-gray-700 hover:text-primary-700 focus:text-primary-700">Forgot
                                         Password?</a></div>
-                                    <button onSubmit={handleSubmit} type="submit" class="w-full block bg-primary-500 hover:bg-primary-400 focus:bg-primary-400 text-white font-semibold rounded-lg
+                                    <button onSubmit={handleSubmit} type="submit" className="w-full block bg-primary-500 hover:bg-primary-400 focus:bg-primary-400 text-white font-semibold rounded-lg
           px-4 py-3 mt-6">
                                         Log In
                                     </button>
 
                                 </Form>
-                                <hr class="my-6 border-gray-300 w-full"/>
+                                <hr className="my-6 border-gray-300 w-full"/>
 
-                                <p class="mt-5 text-center">
+                                <p className="mt-5 text-center">
                                     Need an account?
                                     <Link to='registration'
                                           class="text-primary-500 hover:text-primary-700 font-semibold">Create an

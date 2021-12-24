@@ -9,6 +9,7 @@ import AddJummah from "../components/Main/AddJummah";
 import {getOneJummah} from "../Api/jummah";
 import {addAdans, getOneAdan} from "../Api/AdanTime";
 import JummahDatas from "../components/Main/JummaData";
+import "./product.css"
 
 
 const JummahData = () => {

@@ -13,12 +13,12 @@ export const addJummahs = (addJummah) => {
 export const getOneJummah = (id1, id2, id3) => {
     console.log(id1)
     return axios.get(
-        `http://localhost:8989/jummah/?englishMonth=${id2}&englishYear=${id3}&englishDay=${id1}`
+        `http://18.217.131.163:8989/jummah/?englishMonth=${id2}&englishYear=${id3}&englishDay=${id1}`
     );
 };
 export const updateJummah = (id, addAdan) => {
     const token = JSON.parse(localStorage.getItem('jwt'))
-    return axios.put(`http://localhost:8989/jummah/${id}`, addAdan, {
+    return axios.put(`http://18.217.131.163:8989/jummah/${id}`, addAdan, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
@@ -28,7 +28,7 @@ export const updateJummah = (id, addAdan) => {
 export const deleteJummah= (id) => {
     console.log(id)
     const token = JSON.parse(localStorage.getItem('jwt'))
-    return axios.delete(`http://localhost:8989/jummah/${id}`, {
+    return axios.delete(`http://18.217.131.163:8989/jummah/${id}`, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`

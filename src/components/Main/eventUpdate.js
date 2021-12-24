@@ -121,7 +121,6 @@ const eventUpdate = (datas) => {
                         </Card>
                     </Form>
                 </Col>
-
             </Row>
         </>
     )

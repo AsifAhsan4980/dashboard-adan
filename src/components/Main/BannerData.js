@@ -1,16 +1,8 @@
-import React, {Fragment, useEffect, useState} from "react";
+import React, { useEffect, useState} from "react";
 import {deleteBanner, findAllBanner} from "../../Api/Banner";
-import {Button, Card, Col, Form, Modal, Row, Table} from "react-bootstrap";
-import {deleteAnnouncement, findAllAnnouncement, updateAnnouncement} from "../../Api/Announcement";
-import {deleteEvent} from "../../Api/Event";
-import EventUpdate from "./eventUpdate";
+import {Button, Modal, Table} from "react-bootstrap";
 
 const BannerData = () => {
-    const [show, setShow] = useState(false);
-
-
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
     const [banners, setUser] = useState([]);
 
     useEffect(() => {
@@ -27,8 +19,10 @@ const BannerData = () => {
     };
 
 
+
     return (
         <>
+            <div className="text-center font-bold"> All Banner</div>
             <Table striped bordered hover>
                 <thead>
                 <tr>
@@ -40,13 +34,10 @@ const BannerData = () => {
                 <tbody>
                 {banners && banners.map((data, index)=> {
                     return(
-                        <tr key={{index}}>
-                            <td>{index}</td>
-                            <td>{data.eventName}</td>
+                        <tr key={index}>
+                            <td>{index+1}</td>
+                            <td ><img width="20%" src={data.bannerImage} /></td>
                             <td>
-                                <Button className="mr-4" variant="primary"  onClick={handleShow}>
-                                    Edit
-                                </Button>
                                 <Button
                                     className="btn btn-danger"
                                     onClick={() => deleteUser(data._id)}
@@ -54,20 +45,6 @@ const BannerData = () => {
                                     Delete
                                 </Button>
                             </td>
-                            <Modal show={show} onHide={handleClose}>
-                                <Modal.Header closeButton>
-                                    <Modal.Title>Modal heading</Modal.Title>
-                                </Modal.Header>
-                                <Modal.Body><EventUpdate datas={data} /></Modal.Body>
-                                <Modal.Footer>
-                                    <Button variant="secondary" onClick={handleClose}>
-                                        Close
-                                    </Button>
-                                    <Button variant="primary" onClick={handleClose}>
-                                        Save Changes
-                                    </Button>
-                                </Modal.Footer>
-                            </Modal>
                         </tr>
                     )
                 })}

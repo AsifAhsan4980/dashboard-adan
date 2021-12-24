@@ -1,23 +1,22 @@
-import React, {useEffect, useState} from "react";
-import {Button, Card, Form} from "react-bootstrap";
+import React, {Fragment, useEffect, useState} from "react";
+import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 import {addBanners} from "../Api/Banner";
-import {userInfo} from "../utils/auth";
 import BannerData from "../components/Main/BannerData";
 
-const Banner = ()=> {
+const Banner = () => {
 
-    const [addBanner, setAddBanner] = useState({
-        firstTitle: '',
-        secondTitle: '',
+    const [adanTime, setAdanTime] = useState({
         formData: '',
         success: false
-    });
+    })
 
-    const { firstTitle, secondTitle, formData } = addBanner
+    const {
+        formData
+    } = adanTime
 
     useEffect(() => {
-        setAddBanner({
-            ...addBanner,
+        setAdanTime({
+            ...adanTime,
             formData: new FormData()
         })
     }, [])
@@ -25,45 +24,47 @@ const Banner = ()=> {
     const handleChange = (e, index) => {
         const value = e.target.name === 'image' ? e.target.files[0] : e.target.value;
         formData.set(e.target.name, value);
-        setAddBanner({
-            ...addBanner,
+        setAdanTime({
+            ...adanTime,
             [e.target.name]: value,
         })
     }
 
     const handleSubmit = e => {
         e.preventDefault();
-        setAddBanner({
-            ...addBanner
+        setAdanTime({
+            ...adanTime
         })
-        const { token } = userInfo();
-        addBanners(token, formData)
+
+        addBanners( formData)
             .then(response => {
-                setAddBanner({
-                    firstTitle: '',
-                    secondTitle: '',
-                    success: true,
+                setAdanTime({
+                    success: true
                 })
             })
             .catch(err => console.log(err))
     }
-    return(
-        <>
-            <Card>
-                <Card.Body>
-                    <Form onSubmit={handleSubmit}>
+    console.log(adanTime)
+    return (
+        <Container fluid>
+            <Form onSubmit={handleSubmit}>
+                <Row>
+                    <Col>
                         <Form.Group controlId="formFile" className="mb-3">
                             <Form.Label>Default file input example</Form.Label>
                             <Form.Control type="file" name="image" onChange={handleChange} />
                         </Form.Group>
-                        <Button variant="primary" type="submit">
-                            Add
-                        </Button>
-                    </Form>
-                </Card.Body>
-            </Card>
+                    </Col>
+                </Row>
+
+                <div>
+                    <Button type="submit" variant="primary">
+                        Add new Banner
+                    </Button>
+                </div>
+            </Form>
             <BannerData/>
-        </>
+        </Container>
     )
 }
 export default Banner

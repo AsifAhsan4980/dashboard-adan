@@ -6,11 +6,10 @@ import YearData from "../data/yearData.json"
 import AdanData from "../data/adanData.json"
 import {addAdans} from "../Api/AdanTime";
 import {isAuthenticated} from "../utils/auth";
-import AddRamadan from "../components/Main/addRamadan";
 import './product.css'
 import {getOneJummah} from "../Api/jummah";
 import AddJummah from "../components/Main/AddJummah";
-import JummahDatas from "../components/Main/JummaData";
+import AddRamadan from "../components/Main/addRamadan";
 import {getOneRamadan} from "../Api/Ramadan";
 import RamadanData from "../components/Main/RamadanData";
 
@@ -112,7 +111,7 @@ const Ramadan = () => {
                     <Modal.Title>Modal heading</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <AddJummah/>
+                    <AddRamadan/>
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>
