@@ -2,6 +2,7 @@ import axios from "axios";
 
 export const addAdans = (addAdan) => {
     const token = JSON.parse(localStorage.getItem('jwt'))
+    console.log("ok")
     return axios.post(`http://18.217.131.163:8989/adan/oneMonth/`, addAdan, {
         headers: {
             'Content-Type': 'application/json',
@@ -44,7 +45,7 @@ export const updateProductss = (id, addProduct) => {
 
     const token = JSON.parse(localStorage.getItem('jwt'))
     console.log(addProduct)
-    return axios.put(`http://localhost:8989/adan/${id}`, addProduct, {
+    return axios.put(`http://18.217.131.163:8989/adan/${id}`, addProduct, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`

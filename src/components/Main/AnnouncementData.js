@@ -45,7 +45,8 @@ const AnnouncementData = () => {
                 <tr>
                     <th>#</th>
                     <th>Announcement Name</th>
-                    <th>Announcement Data</th>
+                    <th>Announcement Date</th>
+                    <th>Announcement Time</th>
                     <th>Announcement Description</th>
                     <th>Image</th>
                     <th>Action</th>
@@ -58,6 +59,7 @@ const AnnouncementData = () => {
                             <td>{index + 1}</td>
                             <td>{data.eventName}</td>
                             <td>{data.eventDate}</td>
+                            <td>{data.eventTime}</td>
                             <td>{data.eventBody}</td>
                             <td width="10%"><img width="auto" src={data.eventImage}/></td>
                             <td>

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Button, Col, Container, Form, Row, Dropdown} from "react-bootstrap";
+import {Button, Col, Container, Form, Row, Dropdown, Alert} from "react-bootstrap";
 import DayData from '../../data/dayData.json'
 import MonthData from "../../data/month.json"
 import YearData from "../../data/yearData.json"
@@ -8,7 +8,10 @@ import {isAuthenticated} from "../../utils/auth";
 import {addJummahs} from "../../Api/jummah";
 
 const AddJummah = () => {
-
+    const [values, setValues] = useState({
+        success: false,
+    })
+    const { success } = values;
     const [adanTime, setAdanTime] = useState({
         englishDay: '',
         englishMonth: '',
@@ -42,20 +45,6 @@ const AddJummah = () => {
     };
 
 
-    // const handleRemoveClick = index => {
-    //     const list = [...inputList];
-    //     list.splice(index, 1);
-    //     setInputList(list);
-    // };
-    //
-    // const handleAddClick = () => {
-    //     setInputList([...inputList, {
-    //         label: "level",
-    //         khutba: "time",
-    //         imam: "name"
-    //     }])
-    // };
-
 
     const handleChange = (e, index) => {
         const value = e.target.name === 'image' ? e.target.files[0] : e.target.value;
@@ -69,6 +58,9 @@ const AddJummah = () => {
         e.preventDefault();
         addJummahs({ englishDay, englishMonth, englishYear, prayer, label, khutba, imam})
             .then(response => {
+                setValues({
+                    success: true,
+                })
                 isAuthenticated(response.data.token, () => {
                     setAdanTime({englishDay: '',
                         englishMonth: '',
@@ -83,8 +75,10 @@ const AddJummah = () => {
             })
             .catch(err => console.log(err))
     }
-    console.log(adanTime)
-    return (
+
+
+
+    const addNewPrayer = () => (
         <Container fluid>
             <Form onSubmit={handleSubmit}>
                 <Row>
@@ -196,6 +190,25 @@ const AddJummah = () => {
                 </div>
             </Form>
         </Container>
+    )
+    const showSuccess = () => {
+        console.log(success)
+        if (success) return (
+
+            <>
+                <Alert variant='success'>
+                    Announcement successfully added
+                </Alert>
+            </>
+
+        )
+    }
+
+    return (
+        <div>
+            {showSuccess()}
+            {addNewPrayer()}
+        </div>
     )
 }
 export default AddJummah

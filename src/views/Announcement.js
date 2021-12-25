@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Button, Col, Container, Form, Row, Dropdown} from "react-bootstrap";
+import {Button, Col, Container, Form, Row, Dropdown, Alert} from "react-bootstrap";
 import {addAnnouncement} from "../Api/Announcement";
 import {addEvent} from "../Api/Event";
 import AnnouncementData from "../components/Main/AnnouncementData";
@@ -7,6 +7,10 @@ import {showSuccess} from "../utils/message";
 
 
 const Announcement = () => {
+    const [values, setValues] = useState({
+        success: false,
+    })
+    const { success } = values;
     const [adanTime, setAdanTime] = useState({
         eventName: '',
         eventBody: '',
@@ -49,13 +53,15 @@ const Announcement = () => {
                     eventBody: '',
                     eventDate: '',
                     eventTime:'',
-                    success: true
+                })
+                setValues({
+                    success: true,
                 })
             })
             .catch(err => console.log(err))
     }
-    console.log(adanTime)
-    return (
+
+    const addAnnouncements = () => (
         <Container fluid>
             <Form onSubmit={handleSubmit}>
                 <Row>
@@ -98,12 +104,30 @@ const Announcement = () => {
 
                 <div>
                     <Button type="submit" variant="primary">
-                        Add new Event
+                        Add new Announcement
                     </Button>
                 </div>
             </Form>
             <AnnouncementData/>
         </Container>
+    )
+
+    const showSuccess = () => {
+        console.log(success)
+        if (success) return (<>
+                <Alert variant='success'>
+                   Announcement successfully added
+                </Alert>
+            </>
+
+        )
+    }
+
+    return (
+        <div>
+            {showSuccess()}
+            {addAnnouncements()}
+        </div>
     )
 }
 

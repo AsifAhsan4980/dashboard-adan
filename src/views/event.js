@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Button, Col, Container, Form, Row, Dropdown} from "react-bootstrap";
+import {Button, Col, Container, Form, Row, Dropdown, Alert} from "react-bootstrap";
 import {isAuthenticated, userInfo} from "../utils/auth";
 import {addEvent} from "../Api/Event";
 import {addAdans} from "../Api/AdanTime";
@@ -8,8 +8,10 @@ import {showSuccess} from "../utils/message";
 
 
 const Event = () => {
-    const [success, setSuccess] = useState(false)
-    const [message, setMessage] = useState('');
+    const [values, setValues] = useState({
+        success: false,
+    })
+    const { success } = values;
     const [adanTime, setAdanTime] = useState({
         eventName: '',
         eventBody: '',
@@ -52,15 +54,15 @@ const Event = () => {
                     eventBody: '',
                     eventDate: '',
                     eventTime: '',
-                    success: true
+                })
+                setValues({
+                    success: true,
                 })
             })
             .catch(err => console.log(err))
     }
-    console.log(adanTime)
-    return (
+    const addEvents = () => (
         <Container fluid>
-            {showSuccess(success, message)}
             <Form onSubmit={handleSubmit}>
                 <Row>
                     <Col>
@@ -113,6 +115,23 @@ const Event = () => {
             </div>
 
         </Container>
+    )
+    const showSuccess = () => {
+        console.log(success)
+        if (success) return (<>
+                <Alert variant='success'>
+                    Event successfully added
+                </Alert>
+            </>
+
+        )
+    }
+
+    return (
+        <div>
+            {showSuccess()}
+            {addEvents()}
+        </div>
     )
 }
 export default Event

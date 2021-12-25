@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Button, Col, Container, Form, Row, Dropdown} from "react-bootstrap";
+import {Button, Col, Container, Form, Row, Dropdown, Alert} from "react-bootstrap";
 import DayData from '../../data/dayData.json'
 import MonthData from "../../data/month.json"
 import YearData from "../../data/yearData.json"
@@ -7,7 +7,10 @@ import {isAuthenticated} from "../../utils/auth";
 import {addRamadan} from "../../Api/Ramadan";
 
 const AddRamadan = () => {
-
+    const [values, setValues] = useState({
+        success: false,
+    })
+    const { success } = values;
     const [adanTime, setAdanTime] = useState({
         englishDay: '',
         englishMonth: '',
@@ -68,6 +71,9 @@ const AddRamadan = () => {
         e.preventDefault();
         addRamadan({ englishDay, englishMonth, englishYear, prayer, shehriIn, shehriOut, Iftar})
             .then(response => {
+                setValues({
+                    success: true,
+                })
                 isAuthenticated(response.data.token, () => {
                     setAdanTime({englishDay: '',
                         englishMonth: '',
@@ -82,8 +88,7 @@ const AddRamadan = () => {
             })
             .catch(err => console.log(err))
     }
-    console.log(adanTime)
-    return (
+    const addNewRamadan = () => (
         <Container fluid>
             <Form onSubmit={handleSubmit}>
                 <Row>
@@ -184,6 +189,27 @@ const AddRamadan = () => {
                 </div>
             </Form>
         </Container>
+    )
+
+
+    const showSuccess = () => {
+        console.log(success)
+        if (success) return (
+
+            <>
+                <Alert variant='success'>
+                    Announcement successfully added
+                </Alert>
+            </>
+
+        )
+    }
+
+    return (
+        <div>
+            {showSuccess()}
+            {addNewRamadan()}
+        </div>
     )
 }
 export default AddRamadan

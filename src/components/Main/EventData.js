@@ -36,7 +36,8 @@ const EventData = () => {
                 <tr>
                     <th>#</th>
                     <th>Event Name</th>
-                    <th>Event Data</th>
+                    <th>Event Date</th>
+                    <th>Event Time</th>
                     <th>Event Description</th>
                     <td >Image /></td>
                     <th>Action</th>
@@ -49,6 +50,7 @@ const EventData = () => {
                             <td>{index+1}</td>
                             <td>{data.eventName}</td>
                             <td>{data.eventDate}</td>
+                            <td>{data.eventTime}</td>
                             <td>{data.eventBody}</td>
                             <td width="10%"><img width="auto" src={data.eventImage}  alt="eventImage"/></td>
                             <td>

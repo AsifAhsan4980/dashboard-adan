@@ -8,6 +8,10 @@ import {deleteAdans, updateProductss} from "../../Api/AdanTime";
 import {isAuthenticated} from "../../utils/auth";
 
 const DailyData = (allData) => {
+    const [values, setValues] = useState({
+        success: false,
+    })
+    const { success } = values;
     const data = allData.data
     const [adanTime, setAdanTime] = useState({
         englishDay: '',
@@ -89,6 +93,9 @@ const DailyData = (allData) => {
                     arabMonth: '',
                     arabYear: "",
                     timing: [],
+                })
+                setValues({
+                    success: true,
                 })
             })
         }).catch(err => console.log(err))

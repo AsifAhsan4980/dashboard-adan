@@ -1,13 +1,15 @@
 import React, {Fragment, useEffect, useState} from "react";
-import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
+import {Alert, Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 import {addBanners} from "../Api/Banner";
 import BannerData from "../components/Main/BannerData";
 
 const Banner = () => {
-
+    const [values, setValues] = useState({
+        success: false,
+    })
+    const { success } = values;
     const [adanTime, setAdanTime] = useState({
         formData: '',
-        success: false
     })
 
     const {
@@ -41,11 +43,14 @@ const Banner = () => {
                 setAdanTime({
                     success: true
                 })
+                setValues({
+                    success: true,
+                })
             })
             .catch(err => console.log(err))
     }
-    console.log(adanTime)
-    return (
+
+    const addNewBanner = () => (
         <Container fluid>
             <Form onSubmit={handleSubmit}>
                 <Row>
@@ -65,6 +70,25 @@ const Banner = () => {
             </Form>
             <BannerData/>
         </Container>
+
+    )
+    console.log(adanTime)
+    const showSuccess = () => {
+        console.log(success)
+        if (success) return (<>
+                <Alert variant='success'>
+                    Banner successfully added
+                </Alert>
+            </>
+
+        )
+    }
+
+    return (
+        <div>
+            {showSuccess()}
+            {addNewBanner()}
+        </div>
     )
 }
 export default Banner
