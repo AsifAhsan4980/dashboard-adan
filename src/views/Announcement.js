@@ -11,12 +11,13 @@ const Announcement = () => {
         eventName: '',
         eventBody: '',
         eventDate: '',
+        eventTime:'',
         formData: '',
         success: false
     })
 
     const {
-        eventName, eventBody,  eventDate, formData
+        eventName, eventBody,  eventDate, eventTime, formData
     } = adanTime
 
     useEffect(() => {
@@ -47,6 +48,7 @@ const Announcement = () => {
                     eventName: '',
                     eventBody: '',
                     eventDate: '',
+                    eventTime:'',
                     success: true
                 })
             })
@@ -59,16 +61,23 @@ const Announcement = () => {
                 <Row>
                     <Col>
                         <Form.Group className="mb-3" controlId="addCategory">
-                            <Form.Label>Event name</Form.Label>
+                            <Form.Label>Announcement name</Form.Label>
                             <Form.Control type="price" name="eventName" placeholder="End time"
                                           value={eventName} onChange={handleChange}/>
                         </Form.Group>
                     </Col>
                     <Col>
                         <Form.Group className="mb-3" controlId="addCategory">
-                            <Form.Label>Event Date</Form.Label>
+                            <Form.Label>Announcement Date</Form.Label>
                             <Form.Control type="price" name="eventDate" placeholder="End time"
                                           value={eventDate}onChange={handleChange}/>
+                        </Form.Group>
+                    </Col>
+                    <Col>
+                        <Form.Group className="mb-3" controlId="addCategory">
+                            <Form.Label>Announcement Time</Form.Label>
+                            <Form.Control type="price" name="eventTime" placeholder="End time"
+                                          value={eventTime}onChange={handleChange}/>
                         </Form.Group>
                     </Col>
                 </Row>
@@ -81,7 +90,7 @@ const Announcement = () => {
                     </Col>
                     <Col>
                         <Form.Group controlId="formFile" className="mb-3">
-                            <Form.Label>Default file input example</Form.Label>
+                            <Form.Label>Upload Image</Form.Label>
                             <Form.Control type="file" name="image" onChange={handleChange} />
                         </Form.Group>
                     </Col>

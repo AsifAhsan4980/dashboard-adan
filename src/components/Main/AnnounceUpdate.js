@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Button, Card, Col, Form, Row} from "react-bootstrap";
 import {addAnnouncement, findOneAnnouncement, updateAnnouncement} from "../../Api/Announcement";
+import DatePicker from "react-datepicker";
 
 
 const AnnounceUpdate = (data) => {
@@ -21,23 +22,6 @@ const AnnounceUpdate = (data) => {
         })
     }, []);
     console.log(announcement)
-
-
-    // useEffect(() => {
-    //     setAnnouncement({
-    //         ...announcement,
-    //         formData: new FormData()
-    //     })
-    // }, [])
-    //
-    // const handleInputChange = (e, index) => {
-    //     const value = e.target.name === 'image' ? e.target.files[0] : e.target.value;
-    //     formData.set(e.target.name, value);
-    //     setAnnouncement({
-    //         ...announcement,
-    //         [e.target.name]: value,
-    //     })
-    // }
 
     const update = e => {
         e.preventDefault();
@@ -73,19 +57,20 @@ const AnnounceUpdate = (data) => {
                                                           placeholder={announcement.eventName}
                                                           defaultValue={announcement.eventName}
                                                           value={announcement.eventName}
-                                                          onChange={e => handleInputChange(e)}
+                                                          onChange={e => handleInputChange(date, dateString)}
                                             />
                                         </Form.Group>
                                     </Col>
                                     <Col>
                                         <Form.Group>
                                             <Form.Label>Start Time</Form.Label>
-                                            <Form.Control type="option" name="eventDate"
-                                                          placeholder={announcement.eventDate}
-                                                          defaultValue={announcement.eventDate}
-                                                          value={announcement.eventDate}
-                                                // onChange={e => handleInputChange(e)}
-                                            />
+
+                                            {/*<Form.Control type="option" name="eventDate"*/}
+                                            {/*              placeholder={announcement.eventDate}*/}
+                                            {/*              defaultValue={announcement.eventDate}*/}
+                                            {/*              value={announcement.eventDate}*/}
+                                            {/*    // onChange={e => handleInputChange(e)}*/}
+                                            {/*/>*/}
                                         </Form.Group>
                                     </Col>
                                 </Row>

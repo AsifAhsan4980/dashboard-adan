@@ -7,7 +7,7 @@ const BannerData = () => {
 
     useEffect(() => {
         loadUsers()
-    }, []);
+    }, [banners]);
 
     const loadUsers = async () => {
         const result = await findAllBanner()

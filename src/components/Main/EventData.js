@@ -15,7 +15,7 @@ const EventData = () => {
 
     useEffect(() => {
         loadUsers()
-    }, []);
+    }, [events]);
 
     const loadUsers = async () => {
         const result = await findAllEvent()

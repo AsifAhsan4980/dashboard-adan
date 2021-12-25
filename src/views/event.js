@@ -15,11 +15,12 @@ const Event = () => {
         eventBody: '',
         eventDate: '',
         formData: '',
+        eventTime:'',
         success: false
     })
 
     const {
-        eventName, eventBody,  eventDate, formData
+        eventName, eventBody,  eventDate, formData, eventTime
     } = adanTime
 
     useEffect(() => {
@@ -50,11 +51,13 @@ const Event = () => {
                     eventName: '',
                     eventBody: '',
                     eventDate: '',
+                    eventTime: '',
                     success: true
                 })
             })
             .catch(err => console.log(err))
     }
+    console.log(adanTime)
     return (
         <Container fluid>
             {showSuccess(success, message)}
@@ -72,6 +75,14 @@ const Event = () => {
                             <Form.Label>Event Date</Form.Label>
                             <Form.Control type="price" name="eventDate" placeholder="End time"
                                           value={eventDate}onChange={handleChange}/>
+                        </Form.Group>
+
+                    </Col>
+                    <Col>
+                        <Form.Group className="mb-3" controlId="addCategory">
+                            <Form.Label>Event Time</Form.Label>
+                            <Form.Control type="price" name="eventTime" placeholder="End time"
+                                          value={eventTime}onChange={handleChange}/>
                         </Form.Group>
                     </Col>
                 </Row>

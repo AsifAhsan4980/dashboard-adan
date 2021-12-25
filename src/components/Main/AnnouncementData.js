@@ -1,5 +1,6 @@
 import React, {Fragment, useEffect, useState} from "react";
-import {Button, Card, Col, Form, Modal, Row, Table} from "react-bootstrap";
+import {Button, Card, Col, Form, Modal, Row, Table} from "react-bootstrap"
+import DatePicker from "react-datepicker";
 import {
     deleteAnnouncement,
     findAllAnnouncement,
@@ -7,6 +8,7 @@ import {
     updateAnnouncement
 } from "../../Api/Announcement";
 import AnnounceUpdate from "./AnnounceUpdate";
+
 
 const AnnouncementData = () => {
 
@@ -18,7 +20,7 @@ const AnnouncementData = () => {
     const [events, setUser] = useState([]);
     useEffect(() => {
         loadUsers()
-    }, []);
+    }, [events]);
 
     const loadUsers = async () => {
         const result = await findAllAnnouncement()
