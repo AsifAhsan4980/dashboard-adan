@@ -7,6 +7,7 @@ import YearData from "../../data/yearData.json";
 import {deleteAdans, updateProductss} from "../../Api/AdanTime";
 import {isAuthenticated} from "../../utils/auth";
 import {deleteJummah, getOneJummah, updateJummah} from "../../Api/jummah";
+import {Alert, Snackbar, TextField} from "@mui/material";
 
 const JummahDatas = (allData) => {
     const data = allData.data
@@ -64,7 +65,19 @@ const JummahDatas = (allData) => {
         setInputList(prayer)
         console.log(prayer)
     })
+    const [open, setOpen] = React.useState(false);
 
+    // const handleClick = () => {
+    //     setOpen(true);
+    // };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+    };
     const handleChange = (e, index) => {
         setAdanTime({
             ...adanTime,
@@ -89,6 +102,7 @@ const JummahDatas = (allData) => {
                     prayer: [],
                 })
             })
+            setOpen(true);
         }).catch(err => console.log(err))
     }
 
@@ -97,11 +111,17 @@ const JummahDatas = (allData) => {
         const id = data._id
         deleteJummah(id).then(res => {
             isAuthenticated(res.data.token)
+            setOpen(true);
         }).catch(err => console.log(err))
     }
 
     return (
         <>
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                    Operation done successfully
+                </Alert>
+            </Snackbar>
             <Form>
                 <Row>
                     <Col>
@@ -179,9 +199,27 @@ const JummahDatas = (allData) => {
                             </Col> <Col>
                             <Form.Group className="mb-3" controlId="addCategory">
                                 <Form.Label>Khutba Time</Form.Label>
-                                <Form.Control type="option" name="khutba" placeholder={khutba}
-                                              defaultValue={x.khutba}
-                                              value={khutba} onChange={e => handleInputChange(e, i)}/>
+                                <div>
+                                    <TextField
+                                        label="Pick time"
+                                        type="time"
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                        inputProps={{
+                                            step: 60, // 5 min
+                                        }}
+                                        sx={{ width: 150 }}
+                                        name='khutba'
+                                        value={khutba}
+                                        onChange={e => handleInputChange(e, i)}
+                                        defaultValue={x.khutba}
+                                    />
+                                </div>
+
+                                {/*<Form.Control type="option" name="khutba" placeholder={khutba}*/}
+                                {/*              defaultValue={x.khutba}*/}
+                                {/*              value={khutba} onChange={e => handleInputChange(e, i)}/>*/}
                             </Form.Group>
                         </Col>
 

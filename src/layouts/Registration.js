@@ -1,6 +1,4 @@
-import RegistrationForm from '../components/User/Registration';
-import NavBar from "./NavBar";
-import Footer from "../components/Main/Footer";
+import RegistrationForm from './RegistrationForm';
 
 const Registration = () => {
     return (

@@ -6,8 +6,10 @@ import MonthData from "../../data/month.json";
 import YearData from "../../data/yearData.json";
 import {deleteAdans, updateProductss} from "../../Api/AdanTime";
 import {isAuthenticated} from "../../utils/auth";
+import {Alert, Snackbar, TextField} from "@mui/material";
 
 const DailyData = (allData) => {
+    const [open, setOpen] = React.useState(false);
     const [values, setValues] = useState({
         success: false,
     })
@@ -94,11 +96,13 @@ const DailyData = (allData) => {
                     arabYear: "",
                     timing: [],
                 })
+
                 setValues({
                     success: true,
                 })
             })
-        }).catch(err => console.log(err))
+            setOpen(true)
+        } ).catch(err => console.log(err))
     }
 
     function deleteAdan(e) {
@@ -106,11 +110,23 @@ const DailyData = (allData) => {
         const id = data._id
         deleteAdans(id).then(res => {
             isAuthenticated(res.data.token)
+            setOpen(true);
         }).catch(err => console.log(err))
     }
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
 
+        setOpen(false);
+    };
     return (
         <>
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                    Operation done successfully
+                </Alert>
+            </Snackbar>
             <Form>
                 <Row>
                     <Col>
@@ -187,19 +203,55 @@ const DailyData = (allData) => {
                                 </Form.Group>
                             </Col> <Col>
                             <Form.Group className="mb-3" controlId="addCategory">
-                                <Form.Label>Start Time</Form.Label>
-                                <Form.Control type="option" name="startTime" placeholder={startTime}
-                                              defaultValue={x.startTime}
-                                              value={startTime} onChange={e => handleInputChange(e, i)}/>
+                                <Form.Label>Adan time</Form.Label>
+                                <div>
+                                    <TextField
+                                        label="Pick time"
+                                        type="time"
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                        inputProps={{
+                                            step: 60, // 5 min
+                                        }}
+                                        sx={{ width: 150 }}
+                                        name='startTime'
+                                        value={startTime}
+                                        onChange={e => handleInputChange(e, i)}
+                                        defaultValue={x.startTime}
+                                    />
+                                </div>
+
+                                {/*<Form.Control type="option" name="startTime" placeholder={startTime}*/}
+                                {/*              defaultValue={x.startTime}*/}
+                                {/*              value={startTime} onChange={e => handleInputChange(e, i)}/>*/}
                             </Form.Group>
                         </Col>
 
                             <Col className="btn-box">
                                 <Form.Group className="mb-3" controlId="addCategory">
-                                    <Form.Label>EndTime</Form.Label>
-                                    <Form.Control type="price" name="endTime" placeholder="End time"
-                                                  defaultValue={x.endTime}
-                                                  value={endTime} onChange={e => handleInputChange(e, i)}/>
+                                    <Form.Label>Iqamah time</Form.Label>
+                                    <div>
+                                        <TextField
+                                            label="Pick time"
+                                            type="time"
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                            inputProps={{
+                                                step: 60, // 5 min
+                                            }}
+                                            sx={{ width: 150 }}
+                                            name='endTime'
+                                            value={endTime}
+                                            onChange={e => handleInputChange(e, i)}
+                                            defaultValue={x.endTime}
+                                        />
+                                    </div>
+
+                                    {/*<Form.Control type="price" name="endTime" placeholder="End time"*/}
+                                    {/*              defaultValue={x.endTime}*/}
+                                    {/*              value={endTime} onChange={e => handleInputChange(e, i)}/>*/}
                                 </Form.Group>
                             </Col>
                             <Col className="mt-4">

@@ -1,9 +1,11 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {Button, Col, Container, Form, Row, Dropdown, Alert} from "react-bootstrap";
 import {addAnnouncement} from "../Api/Announcement";
 import {addEvent} from "../Api/Event";
 import AnnouncementData from "../components/Main/AnnouncementData";
 import {showSuccess} from "../utils/message";
+import {useHistory, useLocation} from "react-router-dom";
+import announcementData from "../components/Main/AnnouncementData";
 
 
 const Announcement = () => {
@@ -17,6 +19,7 @@ const Announcement = () => {
         eventDate: '',
         eventTime:'',
         formData: '',
+        image: '',
         success: false
     })
 
@@ -53,10 +56,13 @@ const Announcement = () => {
                     eventBody: '',
                     eventDate: '',
                     eventTime:'',
+                    formData: '',
+                    image: '',
                 })
                 setValues({
                     success: true,
                 })
+                window.location.reload();
             })
             .catch(err => console.log(err))
     }
@@ -76,7 +82,7 @@ const Announcement = () => {
                         <Form.Group className="mb-3" controlId="addCategory">
                             <Form.Label>Announcement Date</Form.Label>
                             <Form.Control type="price" name="eventDate" placeholder="End time"
-                                          value={eventDate}onChange={handleChange}/>
+                                          value={eventDate} onChange={handleChange}/>
                         </Form.Group>
                     </Col>
                     <Col>

@@ -39,7 +39,7 @@ const EventData = () => {
                     <th>Event Date</th>
                     <th>Event Time</th>
                     <th>Event Description</th>
-                    <td >Image /></td>
+                    <td>Image</td>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -64,7 +64,7 @@ const EventData = () => {
                                     Delete
                                 </Button>
                             </td>
-                            <Modal show={show} onHide={handleClose}>
+                            <Modal show={show} size="lg" onHide={handleClose}>
                                 <Modal.Header closeButton>
                                     <Modal.Title>Modal heading</Modal.Title>
                                 </Modal.Header>

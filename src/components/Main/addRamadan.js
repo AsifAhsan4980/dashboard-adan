@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from "react";
-import {Button, Col, Container, Form, Row, Dropdown, Alert} from "react-bootstrap";
+import {Button, Col, Container, Form, Row, Dropdown, } from "react-bootstrap";
 import DayData from '../../data/dayData.json'
 import MonthData from "../../data/month.json"
 import YearData from "../../data/yearData.json"
 import {isAuthenticated} from "../../utils/auth";
 import {addRamadan} from "../../Api/Ramadan";
+import {Snackbar, Alert,TextField} from "@mui/material";
 
 const AddRamadan = () => {
     const [values, setValues] = useState({
@@ -71,9 +72,10 @@ const AddRamadan = () => {
         e.preventDefault();
         addRamadan({ englishDay, englishMonth, englishYear, prayer, shehriIn, shehriOut, Iftar})
             .then(response => {
-                setValues({
-                    success: true,
-                })
+                // setValues({
+                //     success: true,
+                // })
+                setOpen(true);
                 isAuthenticated(response.data.token, () => {
                     setAdanTime({englishDay: '',
                         englishMonth: '',
@@ -84,12 +86,31 @@ const AddRamadan = () => {
                         shehriOut:"",
                         Iftar: ""
                     })
+
                 })
             })
             .catch(err => console.log(err))
     }
+    const [open, setOpen] = React.useState(false);
+
+    const handleClick = () => {
+        setOpen(true);
+    };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+    };
     const addNewRamadan = () => (
         <Container fluid>
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                    This is a success message!
+                </Alert>
+            </Snackbar>
             <Form onSubmit={handleSubmit}>
                 <Row>
                     <Col>
@@ -151,22 +172,73 @@ const AddRamadan = () => {
                             <Col>
                                 <Form.Group className="mb-3" controlId="addCategory">
                                     <Form.Label>Sehri Start</Form.Label>
-                                    <Form.Control type="option" name="shehriIn" placeholder="Start time"
-                                                  value={shehriIn} onChange={e => handleInputChange(e, i)}/>
+                                    <div>
+                                        <TextField
+                                            label="Pick time"
+                                            type="time"
+                                            defaultValue="03:30"
+                                            name='shehriIn'
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                            inputProps={{
+                                                step: 60, // 5 min
+                                            }}
+                                            sx={{ width: 150 }}
+                                            onChange={e => handleInputChange(e, i)}
+                                            value={shehriIn}
+                                        />
+                                    </div>
+                                    {/*<Form.Control type="option" name="shehriIn" placeholder="Start time"*/}
+                                    {/*              value={shehriIn} onChange={e => handleInputChange(e, i)}/>*/}
                                 </Form.Group>
                             </Col> <Col>
                             <Form.Group className="mb-3" controlId="addCategory">
                                 <Form.Label>Sehri End</Form.Label>
-                                <Form.Control type="option" name="shehriOut" placeholder="Start time"
-                                              value={shehriOut} onChange={e => handleInputChange(e, i)}/>
+                                <div>
+                                    <TextField
+                                        label="Pick time"
+                                        type="time"
+                                        defaultValue="03:30"
+                                        name='shehriOut'
+                                        InputLabelProps={{
+                                            shrink: true,
+                                        }}
+                                        inputProps={{
+                                            step: 60, // 5 min
+                                        }}
+                                        sx={{ width: 150 }}
+                                        onChange={e => handleInputChange(e, i)}
+                                        value={shehriOut}
+                                    />
+                                </div>
+                                {/*<Form.Control type="option" name="shehriOut" placeholder="Start time"*/}
+                                {/*              value={shehriOut} onChange={e => handleInputChange(e, i)}/>*/}
                             </Form.Group>
                         </Col>
 
                             <Col className="btn-box">
                                 <Form.Group className="mb-3" controlId="addCategory">
                                     <Form.Label>Iftar Time</Form.Label>
-                                    <Form.Control type="Name" name="Iftar" placeholder="End time"
-                                                  value={Iftar} onChange={e => handleInputChange(e, i)}/>
+                                    <div>
+                                        <TextField
+                                            label="Pick time"
+                                            type="time"
+                                            defaultValue="03:30"
+                                            name='Iftar'
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                            inputProps={{
+                                                step: 60, // 5 min
+                                            }}
+                                            sx={{ width: 150 }}
+                                            onChange={e => handleInputChange(e, i)}
+                                            value={Iftar}
+                                        />
+                                    </div>
+                                    {/*<Form.Control type="Name" name="Iftar" placeholder="End time"*/}
+                                    {/*              value={Iftar} onChange={e => handleInputChange(e, i)}/>*/}
                                 </Form.Group>
                             </Col>
                             <Col className="mt-4">

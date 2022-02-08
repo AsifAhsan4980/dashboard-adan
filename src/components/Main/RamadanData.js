@@ -6,6 +6,7 @@ import YearData from "../../data/yearData.json";
 import {isAuthenticated} from "../../utils/auth";
 import {deleteJummah, getOneJummah, updateJummah} from "../../Api/jummah";
 import {deleteRamadan, updateRamadan} from "../../Api/Ramadan";
+import {Alert, Snackbar, TextField} from "@mui/material";
 
 const RamadanData = (allData) => {
     const data = allData.data
@@ -23,9 +24,9 @@ const RamadanData = (allData) => {
         englishDay, englishMonth, englishYear, prayer
     } = adanTime
     const [inputList, setInputList] = useState([{
-        shehriIn: "",
-        shehriOut: "",
-        Iftar: ""
+        shehriIn: "level",
+        shehriOut:"time",
+        Iftar: "name"
     }]);
 
     const {shehriIn, shehriOut, Iftar} = inputList;
@@ -64,6 +65,7 @@ const RamadanData = (allData) => {
         const id = data._id
         console.log(id)
         updateRamadan(id, adanTime).then(res => {
+            setOpen(true);
             isAuthenticated(res.data.token, () => {
                 setAdanTime({
                     englishDay: '',
@@ -77,7 +79,18 @@ const RamadanData = (allData) => {
             })
         }).catch(err => console.log(err))
     }
+    const [open, setOpen] = React.useState(false);
+    const handleClick = () => {
+        setOpen(true);
+    };
 
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
+    };
     function deleteAdan(e) {
         e.preventDefault();
         const id = data._id
@@ -88,6 +101,11 @@ const RamadanData = (allData) => {
 
     return (
         <>
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                    Operation done successfully
+                </Alert>
+            </Snackbar>
             <Form>
                 <Row>
                     <Col>
@@ -147,27 +165,78 @@ const RamadanData = (allData) => {
                         <Row key={i}>
                             <Col>
                                 <Form.Group className="mb-3" controlId="addCategory">
-                                    <Form.Label>Start Time</Form.Label>
-                                    <Form.Control type="option" name="shehriIn" placeholder={shehriIn}
-                                                  defaultValue={x.shehriIn}
-                                                  value={shehriIn} onChange={e => handleInputChange(e, i)}/>
+                                    <Form.Label>Seheri Start Time</Form.Label>
+                                    <div>
+                                        <TextField
+                                            label="Pick time"
+                                            type="time"
+                                            defaultValue={x.shehriIn}
+                                            name='shehriIn'
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                            inputProps={{
+                                                step: 60, // 5 min
+                                            }}
+                                            sx={{ width: 150 }}
+                                            onChange={e => handleInputChange(e, i)}
+                                            value={shehriIn}
+                                        />
+                                    </div>
+                                    {/*<Form.Control type="option" name="shehriIn" placeholder={shehriIn}*/}
+                                    {/*              defaultValue={x.shehriIn}*/}
+                                    {/*              value={shehriIn} onChange={e => handleInputChange(e, i)}/>*/}
                                 </Form.Group>
                             </Col>
                             <Col>
                                 <Form.Group className="mb-3" controlId="addCategory">
-                                    <Form.Label>Start Time</Form.Label>
-                                    <Form.Control type="option" name="shehriOut" placeholder={shehriOut}
-                                                  defaultValue={x.shehriOut}
-                                                  value={shehriOut} onChange={e => handleInputChange(e, i)}/>
+                                    <Form.Label>Seheri End Time</Form.Label>
+                                    <div>
+                                        <TextField
+                                            label="Pick time"
+                                            type="time"
+                                            defaultValue={x.shehriOut}
+                                            name='shehriOut'
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                            inputProps={{
+                                                step: 60, // 5 min
+                                            }}
+                                            sx={{ width: 150 }}
+                                            onChange={e => handleInputChange(e, i)}
+                                            value={shehriOut}
+                                        />
+                                    </div>
+                                    {/*<Form.Control type="option" name="shehriOut" placeholder={shehriOut}*/}
+                                    {/*              defaultValue={x.shehriOut}*/}
+                                    {/*              value={shehriOut} onChange={e => handleInputChange(e, i)}/>*/}
                                 </Form.Group>
                             </Col>
 
                             <Col className="btn-box">
                                 <Form.Group className="mb-3" controlId="addCategory">
-                                    <Form.Label>EndTime</Form.Label>
-                                    <Form.Control type="price" name="Iftar" placeholder="End time"
-                                                  defaultValue={x.Iftar}
-                                                  value={Iftar} onChange={e => handleInputChange(e, i)}/>
+                                    <Form.Label>Iftar Time</Form.Label>
+                                    <div>
+                                        <TextField
+                                            label="Pick time"
+                                            type="time"
+                                            defaultValue={x.Iftar}
+                                            name='Iftar'
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                            inputProps={{
+                                                step: 60, // 5 min
+                                            }}
+                                            sx={{ width: 150 }}
+                                            onChange={e => handleInputChange(e, i)}
+                                            value={Iftar}
+                                        />
+                                    </div>
+                                    {/*<Form.Control type="price" name="Iftar" placeholder="End time"*/}
+                                    {/*              defaultValue={x.Iftar}*/}
+                                    {/*              value={Iftar} onChange={e => handleInputChange(e, i)}/>*/}
                                 </Form.Group>
                             </Col>
                         </Row>

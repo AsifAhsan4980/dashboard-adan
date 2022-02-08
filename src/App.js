@@ -4,6 +4,7 @@ import React from "react";
 import {AuthProvider} from "./utils/auth";
 import Login from "./views/Login";
 import {updateAdan} from "./components/Main/updateAdan";
+import Registration from "./layouts/Registration";
 
 const App = () => {
     return (
@@ -11,6 +12,7 @@ const App = () => {
             <Switch>
                 <Route path="/admin" render={(props) => <AdminLayout {...props} />}/>
                 <Route path='/' component={Login}/>
+                {/*<Route path='/register' component={Registration}/>*/}
             </Switch>
         </AuthProvider>
     )

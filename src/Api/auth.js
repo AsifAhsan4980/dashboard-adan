@@ -1,8 +1,8 @@
-
 import axios from "axios";
+import {port} from "../utils/dataBasePort";
 
 export const login = (user) => {
-    return axios.post("http://18.217.131.163:8989/auth/login", user, {
+    return axios.post(`${port}/auth/login`, user, {
         headers: {
             'Content-Type': 'application/json'
         }
@@ -11,7 +11,7 @@ export const login = (user) => {
 
 export const registration = (user) => {
     console.log(user)
-    return axios.post("http://18.217.131.163:8989/auth/register", user, {
+    return axios.post(`${port}/auth/register`, user, {
         headers: {
             'Content-Type': 'application/json'
         }

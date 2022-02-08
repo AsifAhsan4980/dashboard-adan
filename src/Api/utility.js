@@ -12,10 +12,11 @@ export const addBanners = (addBanner) => {
 };*/
 
 import axios from "axios";
+import {port} from "../utils/dataBasePort";
 
 export const addBanners = (token,addBanner) => {
 
-    return axios.post("http://18.217.131.163:8989/admin/banner", addBanner, {
+    return axios.post(`${port}/admin/banner`, addBanner, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`

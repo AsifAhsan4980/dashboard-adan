@@ -28,8 +28,8 @@ const Ramadan = () => {
 
     const [inputList, setInputList] = useState([{
         shehriIn: "level",
-        shehriOut: "time",
-        Iftar: "time"
+        shehriOut:"time",
+        Iftar: "name"
     }]);
 
     const [show, setShow] = useState(false);
@@ -106,12 +106,13 @@ const Ramadan = () => {
                 Add Ramadan
             </Button>
 
-            <Modal show={show} onHide={handleClose}>
+            <Modal show={show} size="lg" onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Modal heading</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <AddRamadan/>
+
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>

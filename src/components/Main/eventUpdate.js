@@ -1,119 +1,118 @@
 import React, {useEffect, useState} from "react";
-import {Button, Card, Col, Form, Row} from "react-bootstrap";
-import {updateEvent} from "../../Api/Event";
+import {Alert, Button, Card, Col, Form, Row} from "react-bootstrap";
+import {findOneEvent, updateEvent} from "../../Api/Event";
+import { useForm } from "react-hook-form";
 
+const eventUpdate = (data) => {
+    const { register, handleSubmit } = useForm({ shouldUseNativeValidation: true });
+    const id = data.datas._id
+    console.log(data)
 
-const eventUpdate = (datas) => {
-    // console.log(datas.datas)
-    const [events, setEvents] = useState({
-        eventName: '',
-        eventBody: '',
-        eventDate: '',
-        formData: '',
-        success: false
-    })
-
-    const {eventName, eventBody, eventDate, formData} = events
-
-    const [selectedFile, setSelectedFile] = useState();
-    const [isFilePicked, setIsFilePicked] = useState(false);
-
-    const changeHandler = (event) => {
-        setSelectedFile(event.target.files[0]);
-        setIsFilePicked(true);
-    };
+    const [defaultData, setDefaultData] = useState({})
+    const [success, setSuccess] = useState(false)
 
     useEffect(() => {
-        setEvents({
-            ...events,
-            formData: new FormData()
+        findOneEvent(id).then(res => {
+            setDefaultData(res.data)
+            console.log(defaultData)
         })
     }, [])
 
-    useEffect(async () => {
-        setEvents(datas.datas)
-    },[events])
-
-
-
-    function handleInputChange(e) {
-        const value = e.target.name === 'image' ? e.target.files[0] : e.target.value;
-        formData.append(e.target.name, value);
-        setEvents({
-            ...events,
-            [e.target.name]: value
-        });
-    }
-
-    function update(e) {
-        const formData = new FormData();
-
-        formData.append('eventImage', selectedFile);
-        e.preventDefault();
-        setEvents({
-            ...events
-        })
-
-        updateEvent(datas.datas._id, formData)
-            .then(response => {
-                setEvents({
-                    success: true
-                })
+    const onSubmit = async data => {
+        try {
+            // const formData = new FormData();
+            // formData.append("eventIamge", data.image[0]);
+            // console.log(data.image[0])
+            await updateEvent(id, data).then((res)=> {
+                if (res) {
+                    setSuccess(true)
+                }
+                else{
+                    setSuccess(false)
+                }
             })
-            .catch(err => console.log(err))
-    }
+        }catch (err){
+            setSuccess(false)
+        }
+
+    };
 
     return (
         <>
             <Row className="mt-4">
                 <Col>
-                    <Form>
+                    <Form onSubmit={handleSubmit(onSubmit)}>
+                        {success && (<Alert > Ok</Alert>)}
+                        {!success && (<Alert > Something went Wrong</Alert>)}
                         <Card>
                             <Card.Body>
                                 <Row>
                                     <Col>
                                         <Form.Group>
-                                            <Form.Label>Start Time</Form.Label>
-                                            <Form.Control type="option" name="eventName"
-                                                          placeholder={eventName}
-                                                          // defaultValue={eventName}
-                                                          value={eventName}
-                                                          onChange={e => handleInputChange(e)}/>
+                                            <Form.Label>Announcement Name</Form.Label>
+                                            <Form.Control type="name"
+                                                          name="eventName"
+                                                          placeholder='Announcement Name'
+                                                          defaultValue={defaultData.eventName}
+                                                          {...register("eventName")}
+
+                                            />
                                         </Form.Group>
                                     </Col>
                                     <Col>
                                         <Form.Group>
-                                            <Form.Label>Start Time</Form.Label>
-                                            <Form.Control type="option" name="eventDate"
-                                                          placeholder={eventDate}
-                                                          defaultValue={eventDate}
-                                                          value={eventDate}
-                                                          onChange={e => handleInputChange(e)}/>
+                                            <Form.Label>Announcement Date</Form.Label>
+
+                                            <Form.Control type="dates"
+                                                          name="eventDate"
+                                                          placeholder='Announcement Date'
+                                                          defaultValue={defaultData.eventDate}
+                                                          {...register("eventDate")}
+                                            />
+                                        </Form.Group>
+                                    </Col>
+                                    <Col>
+                                        <Form.Group>
+                                            <Form.Label>Announcement Time</Form.Label>
+
+                                            <Form.Control type="option"
+                                                          time="eventDate"
+                                                          placeholder='Announcement Time'
+                                                          defaultValue={defaultData.eventTime}
+                                                          {...register("eventTime")}
+
+                                            />
                                         </Form.Group>
                                     </Col>
                                 </Row>
                                 <Row>
                                     <Col>
                                         <Form.Group>
-                                            <Form.Label>Start Time</Form.Label>
-                                            <Form.Control as="textarea" type="option" name="eventBody"
-                                                          placeholder={eventBody}
-                                                          defaultValue={eventBody}
-                                                          value={eventBody}
-                                                          onChange={e => handleInputChange(e)}/>
+                                            <Form.Label>Announcement Body</Form.Label>
+                                            <Form.Control as="textarea"
+                                                          type="option"
+                                                          name="eventBody"
+                                                          placeholder='Announcement Body'
+                                                          defaultValue={defaultData.eventBody}
+                                                          {...register("eventBody")}
+
+                                            />
                                         </Form.Group>
                                     </Col>
                                     <Col>
-                                        <Form.Group controlId="formFile" className="mb-3">
-                                            <Form.Label>Default file input example</Form.Label>
-                                            <Form.Control type="file" name="image"
-                                                          onChange={e => handleInputChange(e)}/>
-                                        </Form.Group>
+                                        {/*<Form.Group controlId="formFile" className="mb-3">*/}
+                                        {/*    <Form.Label>Default file input example</Form.Label>*/}
+                                        {/*    <Form.Control type="file"*/}
+                                        {/*                  name="image"*/}
+                                        {/*                  {...register("image")}*/}
+
+                                        {/*    />*/}
+                                        {/*</Form.Group>*/}
                                     </Col>
                                 </Row>
                                 <div className="d-flex justify-content-around">
                                     <div>
-                                        <Button variant="outline-danger" onClick={update}>Update?</Button>
+                                        <Button variant="outline-danger" type='submit'>Update?</Button>
                                     </div>
                                 </div>
 

@@ -1,9 +1,10 @@
 import axios from "axios";
+import {port} from "../utils/dataBasePort";
 
 
 export const addEvent = ( formData) => {
     const token = JSON.parse(localStorage.getItem('jwt'))
-    return axios.post(`http://18.217.131.163:8989/event/`, formData, {
+    return axios.post(`${port}/event/`, formData, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
@@ -11,14 +12,14 @@ export const addEvent = ( formData) => {
     })
 };
 export const findAllEvent = () => {
-    return axios.get("http://18.217.131.163:8989/event/")
+    return axios.get(`${port}/event/`)
 }
-export const findOneEvent = () => {
-    return axios.get("http://18.217.131.163:8989/event/")
+export const findOneEvent = (id) => {
+    return axios.get(`${port}/event/${id}`)
 }
 export const updateEvent = (id, data) => {
     const token = JSON.parse(localStorage.getItem('jwt'))
-    return axios.put(`http://18.217.131.163:8989/event/${id}`, data, {
+    return axios.put(`${port}/event/${id}`, data, {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
@@ -26,9 +27,10 @@ export const updateEvent = (id, data) => {
     })
 }
 
+
 export const deleteEvent = (id) => {
     const token = JSON.parse(localStorage.getItem('jwt'))
-    return axios.delete(`http://18.217.131.163:8989/event/${id}`,  {
+    return axios.delete(`${port}/event/${id}`,  {
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`

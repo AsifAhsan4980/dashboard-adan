@@ -3,9 +3,10 @@ import {Button, Col, Container, Form, Row, Dropdown, Alert} from "react-bootstra
 import DayData from '../../data/dayData.json'
 import MonthData from "../../data/month.json"
 import YearData from "../../data/yearData.json"
-import AdanData from "../../data/adanData.json"
+import AdanData from "../../data/jummah.json"
 import {isAuthenticated} from "../../utils/auth";
 import {addJummahs} from "../../Api/jummah";
+import {TextField} from "@mui/material";
 
 const AddJummah = () => {
     const [values, setValues] = useState({
@@ -158,8 +159,24 @@ const AddJummah = () => {
                             </Col> <Col>
                             <Form.Group className="mb-3" controlId="addCategory">
                                 <Form.Label>Khutba Time</Form.Label>
-                                <Form.Control type="option" name="khutba" placeholder="Start time"
-                                              value={khutba} onChange={e => handleInputChange(e, i)}/>
+                                <TextField
+                                    label="Pick time"
+                                    type="time"
+                                    defaultValue="07:30"
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                    inputProps={{
+                                        step: 60, // 5 min
+                                    }}
+                                    sx={{ width: 150 }}
+                                    name='khutba'
+                                    value={khutba}
+                                    onChange={e => handleInputChange(e, i)}
+
+                                />
+                                {/*<Form.Control type="option" name="khutba" placeholder="Start time"*/}
+                                {/*              value={khutba} onChange={e => handleInputChange(e, i)}/>*/}
                             </Form.Group>
                         </Col>
 

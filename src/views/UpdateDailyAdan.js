@@ -120,7 +120,7 @@ const UpdateDailyAdan = () => {
                 Add Daily Adan
             </Button>
 
-            <Modal show={show} onHide={handleClose}>
+            <Modal show={show} size="lg" onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Modal heading</Modal.Title>
                 </Modal.Header>

@@ -2,6 +2,7 @@ import React, {Fragment, useEffect, useState} from "react";
 import {Alert, Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 import {addBanners} from "../Api/Banner";
 import BannerData from "../components/Main/BannerData";
+import {useHistory} from "react-router-dom";
 
 const Banner = () => {
     const [values, setValues] = useState({
@@ -31,7 +32,7 @@ const Banner = () => {
             [e.target.name]: value,
         })
     }
-
+    const history = useHistory();
     const handleSubmit = e => {
         e.preventDefault();
         setAdanTime({
@@ -46,6 +47,7 @@ const Banner = () => {
                 setValues({
                     success: true,
                 })
+                window.location.reload();
             })
             .catch(err => console.log(err))
     }

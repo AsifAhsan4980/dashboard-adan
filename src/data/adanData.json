@@ -9,22 +9,12 @@
     "label": "Duhr"
   },
   {
-    "label": "Asr/Sh"
+    "label": "Asr"
   },
   {
-    "label": "Asr/Hn"
-  }, {
     "label": "Maghrib"
-  }, {
+  },
+  {
     "label": "Isha"
-  },
-  {
-    "label" : "jummah"
-  },
-  {
-    "label" : "Eid al-Adha"
-  },
-  {
-    "label" : "Eid al-Fitr"
   }
 ]

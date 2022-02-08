@@ -99,10 +99,10 @@ const JummahData = () => {
     return (
         <>
             <Button variant="primary" className="mb-4" onClick={handleShow}>
-                Add Jummah
+                Add Prayer
             </Button>
 
-            <Modal show={show} onHide={handleClose}>
+            <Modal show={show} size="lg" onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Modal heading</Modal.Title>
                 </Modal.Header>

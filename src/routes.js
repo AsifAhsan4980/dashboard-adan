@@ -49,7 +49,7 @@ const dashboardRoutes = [
   },
   {
     path: "/Jummah",
-    name: "Jummah",
+    name: "Jummah & Others",
     icon: "nc-icon nc-notes",
     component: JummahData,
     layout: "/admin",

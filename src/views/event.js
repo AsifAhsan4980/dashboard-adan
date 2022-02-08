@@ -58,6 +58,7 @@ const Event = () => {
                 setValues({
                     success: true,
                 })
+                window.location.reload();
             })
             .catch(err => console.log(err))
     }

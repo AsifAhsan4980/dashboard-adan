@@ -20,7 +20,7 @@ const AnnouncementData = () => {
     const [events, setUser] = useState([]);
     useEffect(() => {
         loadUsers()
-    }, [events]);
+    }, []);
 
     const loadUsers = async () => {
         const result = await findAllAnnouncement()
@@ -80,7 +80,7 @@ const AnnouncementData = () => {
             </Table>
             <div>
             </div>
-            <Modal show={show} onHide={handleClose}>
+            <Modal show={show} size="lg" onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Edit Announcement</Modal.Title>
                 </Modal.Header>
