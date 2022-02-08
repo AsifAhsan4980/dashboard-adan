@@ -35,7 +35,7 @@ const AddDailyAdan = () => {
 
     const handleInputChange = (e, index) => {
         const {name, value} = e.target;
-        console.log("hello",name, value)
+
         const list = [...inputList];
         list[index][name] = value;
         setInputList(list);
@@ -52,7 +52,7 @@ const AddDailyAdan = () => {
         setInputList(list);
     };
 
-    console.log(inputList)
+
     const handleAddClick = () => {
         setInputList([...inputList, {
             level: " ",
@@ -74,27 +74,31 @@ const AddDailyAdan = () => {
         e.preventDefault();
         addAdans({englishDay, englishMonth, englishYear, timing, level, startTime, endTime})
             .then(response => {
-                // setValues({
-                //     success: true,
+                console.log(response.data.message)
+                if (response.data.message === 'data exsit'){
+                    setOpens(true);
+                }
+                else {
+                    setOpen(true);
+                }
+
+                // setOpen(true);
+                // isAuthenticated(response.data.token, () => {
+                //     setAdanTime({
+                //         englishDay: '',
+                //         englishMonth: '',
+                //         englishYear: "",
+                //         timing: inputList,
+                //         level: "",
+                //         startTime: "",
+                //         endTime: "",
+                //         success: true,
+                //     })
+                //     setValues({
+                //         success: true,
+                //     })
+                //     showSuccess()
                 // })
-                setOpen(true);
-                isAuthenticated(response.data.token, () => {
-                    setAdanTime({
-                        englishDay: '',
-                        englishMonth: '',
-                        englishYear: "",
-                        timing: inputList,
-                        level: "",
-                        startTime: "",
-                        endTime: "",
-                        success: true,
-                    })
-                    setValues({
-                        success: true,
-                    })
-                    console.log(values)
-                    showSuccess()
-                })
             })
             .catch(err => console.log(err))
     }
@@ -111,11 +115,31 @@ const AddDailyAdan = () => {
 
         setOpen(false);
     };
+    const [opens, setOpens] = React.useState(false);
+
+    const handleClicks = () => {
+        setOpens(true);
+    };
+
+    const handleCloses = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpens(false);
+    };
+    const vertical = 'top'
+    const horizontal = 'right'
     const addNewAdan = () => (
         <Container fluid>
             <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-                <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-                    This is a success message!
+                <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }} key={vertical + horizontal} anchorOrigin={{ vertical, horizontal }}>
+                    Data added successfully
+                </Alert>
+            </Snackbar>
+            <Snackbar open={opens} autoHideDuration={6000} onClose={handleCloses}>
+                <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}  key={vertical + horizontal} anchorOrigin={{ vertical, horizontal }}>
+                    Data already exist
                 </Alert>
             </Snackbar>
             <Form onSubmit={handleSubmit}>
@@ -212,20 +236,6 @@ const AddDailyAdan = () => {
                                     onChange={e => handleInputChange(e, i)}
 
                                 />
-                                {/*<Form.Group className="mb-3" controlId="addCategory">*/}
-                                {/*    <Form.Label>Adan time</Form.Label>*/}
-                                {/*    <Form.Control type="option" name="startTime" placeholder="Start time"*/}
-                                {/*                  value={startTime} onChange={e => handleInputChange(e, i)}/>*/}
-                                {/*</Form.Group>*/}
-                                {/*<Form.Group className="mb-3" controlId="addCategory">*/}
-                                {/*    <Form.Control as="select" aria-label="Default select example"*/}
-                                {/*                  defaultValue="State..."*/}
-                                {/*                  name="level" value={level} onChange={e => handleInputChange(e, i)}>*/}
-                                {/*        <option>am/pm</option>*/}
-                                {/*        <option className="text-black">am</option>*/}
-                                {/*        <option className="text-black">pm</option>*/}
-                                {/*    </Form.Control>*/}
-                                {/*</Form.Group>*/}
                             </Col>
 
                             <Col className="btn-box">
@@ -270,13 +280,13 @@ const AddDailyAdan = () => {
         </Container>
     )
 
-    const showSuccess = () => {
-        console.log(success)
+    const showSuccess = (data) => {
+
         if (success) return (
 
             <>
                 <Alert variant='success'>
-                    Announcement successfully added
+                    {data}
                 </Alert>
             </>
 
