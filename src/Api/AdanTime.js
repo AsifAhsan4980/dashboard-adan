@@ -66,3 +66,15 @@ export const updateProductss = (id, addProduct) => {
 //         }
 //     );
 // };
+
+export const updateNotificationTime = ( addProduct) => {
+
+    const token = JSON.parse(localStorage.getItem('jwt'))
+    console.log(addProduct)
+    return axios.put(`${port}/adan/notificationTime/62089d098849a46b962af7b1`, addProduct, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    })
+};

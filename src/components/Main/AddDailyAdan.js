@@ -5,9 +5,25 @@ import MonthData from "../../data/month.json"
 import YearData from "../../data/yearData.json"
 import AdanData from "../../data/adanData.json"
 import {addAdans} from "../../Api/AdanTime";
+import moment from 'moment'
 import {isAuthenticated} from "../../utils/auth";
-import {Snackbar, TextField, Alert} from "@mui/material";
+import {
+    Snackbar,
+    TextField,
+    Alert,
+    TableContainer,
+    Paper,
+    TableHead,
+    TableRow,
+    TableCell,
+    TableBody
+} from "@mui/material";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import {Table} from "reactstrap";
 // import TimePicker from 'react-bootstrap-time-picker';
+
+
 const AddDailyAdan = () => {
     const [values, setValues] = useState({
         success: false,
@@ -19,6 +35,8 @@ const AddDailyAdan = () => {
         englishYear: "",
         timing: [],
     })
+    const [rows, setRow] = useState([ ]);
+
 
     const {
         englishDay, englishMonth, englishYear, timing
@@ -70,43 +88,40 @@ const AddDailyAdan = () => {
         })
     }
 
+
+
+
     function handleSubmit(e) {
         e.preventDefault();
         addAdans({englishDay, englishMonth, englishYear, timing, level, startTime, endTime})
             .then(response => {
-                console.log(response.data.message)
-                if (response.data.message === 'data exsit'){
+                if (response.data.message === 'data exsit') {
                     setOpens(true);
-                }
-                else {
+                } else {
                     setOpen(true);
+                    let resData = response.data
+                    setRow([
+                        ...rows,
+                        createData(`${resData.englishDay}/${resData.englishMonth}/${resData.englishYear} (added at ${moment(resData.createdAt, ).format(' h:mm:ss a')})`, `${resData?.timing[0]?.startTime} | ${resData?.timing[0]?.endTime}`, `${resData?.timing[1]?.startTime} `, `${resData?.timing[2]?.startTime} | ${resData?.timing[2]?.endTime}`, `${resData?.timing[3]?.startTime} | ${resData?.timing[3]?.endTime}`,`${resData?.timing[4]?.startTime} | ${resData?.timing[4]?.endTime}`,`${resData?.timing[5]?.startTime} | ${resData?.timing[5]?.endTime}`)
+                    ])
                 }
-
-                // setOpen(true);
-                // isAuthenticated(response.data.token, () => {
-                //     setAdanTime({
-                //         englishDay: '',
-                //         englishMonth: '',
-                //         englishYear: "",
-                //         timing: inputList,
-                //         level: "",
-                //         startTime: "",
-                //         endTime: "",
-                //         success: true,
-                //     })
-                //     setValues({
-                //         success: true,
-                //     })
-                //     showSuccess()
-                // })
             })
             .catch(err => console.log(err))
     }
+
     const [open, setOpen] = React.useState(false);
 
-    const handleClick = () => {
-        setOpen(true);
-    };
+    function createData(
+        name: string,
+        fazr: string,
+        sunrise: string,
+        duhr: string,
+        asr: string,
+        magrib : string,
+        isha: string
+    ) {
+        return {name, fazr, sunrise, duhr, asr, magrib, isha};
+    }
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -116,10 +131,6 @@ const AddDailyAdan = () => {
         setOpen(false);
     };
     const [opens, setOpens] = React.useState(false);
-
-    const handleClicks = () => {
-        setOpens(true);
-    };
 
     const handleCloses = (event, reason) => {
         if (reason === 'clickaway') {
@@ -133,15 +144,57 @@ const AddDailyAdan = () => {
     const addNewAdan = () => (
         <Container fluid>
             <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-                <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }} key={vertical + horizontal} anchorOrigin={{ vertical, horizontal }}>
+                <Alert onClose={handleClose} severity="success" sx={{width: '100%'}} key={vertical + horizontal}
+                       anchorOrigin={{vertical, horizontal}}>
                     Data added successfully
                 </Alert>
             </Snackbar>
             <Snackbar open={opens} autoHideDuration={6000} onClose={handleCloses}>
-                <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}  key={vertical + horizontal} anchorOrigin={{ vertical, horizontal }}>
+                <Alert onClose={handleClose} severity="error" sx={{width: '100%'}} key={vertical + horizontal}
+                       anchorOrigin={{vertical, horizontal}}>
                     Data already exist
                 </Alert>
             </Snackbar>
+
+            {rows.length!==0 && (
+                <Box>
+                    <Typography>Last added data</Typography>
+                    <TableContainer component={Paper}>
+                        <Table sx={{minWidth: 650}} aria-label="simple table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Date</TableCell>
+                                    <TableCell align="right">Fazr(Adan| Iqamah)</TableCell>
+                                    <TableCell align="right">Sunrise</TableCell>
+                                    <TableCell align="right">Duhr(Adan| Iqamah)</TableCell>
+                                    <TableCell align="right">Asr(Adan| Iqamah)</TableCell>
+                                    <TableCell align="right">Magrib(Adan| Iqamah)</TableCell>
+                                    <TableCell align="right">Isha(Adan| Iqamah)</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {rows?.map((row) => (
+                                    <TableRow
+                                        key={row.name}
+                                        sx={{'&:last-child td, &:last-child th': {border: 0}}}
+                                    >
+                                        <TableCell component="th" scope="row">
+                                            {row.name}
+                                        </TableCell>
+                                        <TableCell align="right">{row.fazr}</TableCell>
+                                        <TableCell align="right">{row.sunrise}</TableCell>
+                                        <TableCell align="right">{row.duhr}</TableCell>
+                                        <TableCell align="right">{row.asr}</TableCell>
+                                        <TableCell align="right">{row.magrib}</TableCell>
+                                        <TableCell align="right">{row.isha}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Box>
+            )}
+
             <Form onSubmit={handleSubmit}>
                 <Row>
                     <Col>
@@ -219,7 +272,7 @@ const AddDailyAdan = () => {
                                 </Form.Group>
                             </Col>
                             <Col>
-                                <Form.Label>Adan time</Form.Label>
+                                <Typography sx={{m: 1}} >Adan time</Typography>
                                 <TextField
                                     label="Pick time"
                                     type="time"
@@ -230,7 +283,7 @@ const AddDailyAdan = () => {
                                     inputProps={{
                                         step: 60, // 5 min
                                     }}
-                                    sx={{ width: 150 }}
+                                    sx={{width: 150}}
                                     name='startTime'
                                     value={startTime}
                                     onChange={e => handleInputChange(e, i)}
@@ -240,7 +293,7 @@ const AddDailyAdan = () => {
 
                             <Col className="btn-box">
                                 <Form.Group className="mb-3" controlId="addCategory">
-                                    <Form.Label>Iqamah time</Form.Label>
+                                    <Typography sx={{m: 1}} >Iqamah time</Typography>
                                     <TextField
                                         label="Pick time"
                                         type="time"
@@ -252,7 +305,7 @@ const AddDailyAdan = () => {
                                         inputProps={{
                                             step: 60, // 5 min
                                         }}
-                                        sx={{ width: 150 }}
+                                        sx={{width: 150}}
                                         onChange={e => handleInputChange(e, i)}
                                         value={endTime}
                                     />
