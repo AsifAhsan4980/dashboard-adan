@@ -26,7 +26,7 @@ export const updateAdans = (id, addAdan) => {
 export const getOneAdan = (id1, id2, id3) => {
     console.log(id1)
     return axios.get(
-        `${port}/adan/oneDay/?englishMonth=${id2}&englishYear=${id3}&englishDay=${id1}`
+        `${port}/adan/oneDayDashboard/?englishMonth=${id2}&englishYear=${id3}&englishDay=${id1}`
     );
 };
 

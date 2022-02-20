@@ -216,7 +216,7 @@ const DailyData = (allData) => {
                                         }}
                                         sx={{ width: 150 }}
                                         name='startTime'
-                                        value={startTime}
+                                        value={x.startTime}
                                         onChange={e => handleInputChange(e, i)}
                                         defaultValue={x.startTime}
                                     />
@@ -243,7 +243,7 @@ const DailyData = (allData) => {
                                             }}
                                             sx={{ width: 150 }}
                                             name='endTime'
-                                            value={endTime}
+                                            value={x.endTime}
                                             onChange={e => handleInputChange(e, i)}
                                             defaultValue={x.endTime}
                                         />

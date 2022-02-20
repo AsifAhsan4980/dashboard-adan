@@ -104,7 +104,7 @@ const JummahData = () => {
 
             <Modal show={show} size="lg" onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
+                    <Modal.Title>Add Jummah And Eid Data</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <AddJummah/>

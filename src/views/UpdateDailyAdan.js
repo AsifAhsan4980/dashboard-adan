@@ -104,7 +104,7 @@ const UpdateDailyAdan = () => {
                     const timing = allData.timing
                     setAdanTime(allData)
                     setInputList(timing)
-                    console.log(adanTime)
+                    console.log('database',adanTime)
                 } catch (err) {
                     console.log(err)
                 }
@@ -122,7 +122,7 @@ const UpdateDailyAdan = () => {
 
             <Modal show={show} size="xl" onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
+                    <Modal.Title>Add Daily Adan</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <AddDailyAdan/>

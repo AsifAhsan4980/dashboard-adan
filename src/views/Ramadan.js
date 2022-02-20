@@ -108,7 +108,7 @@ const Ramadan = () => {
 
             <Modal show={show} size="lg" onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
+                    <Modal.Title>Add Ramadan Data</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <AddRamadan/>

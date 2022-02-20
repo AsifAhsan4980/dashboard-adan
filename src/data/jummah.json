@@ -1,11 +1,33 @@
 [
   {
-    "label" : "jummah"
+    "label" : "Jummah"
+  },  {
+    "label" : "Jummah 1"
+  },  {
+    "label" : "Jummah 2"
+  },  {
+    "label" : "Jummah 3"
   },
   {
-    "label" : "Eid al-Adha"
+    "label" : "Eid al-Adha 1"
+  },  {
+    "label" : "Eid al-Adha 2"
+  },  {
+    "label" : "Eid al-Adha 3"
+  },  {
+    "label" : "Eid al-Adha 4"
+  },  {
+    "label" : "Eid al-Adha 5"
   },
   {
-    "label" : "Eid al-Fitr"
+    "label" : "Eid al-Fitr 1"
+  },  {
+    "label" : "Eid al-Fitr 2"
+  },  {
+    "label" : "Eid al-Fitr 3"
+  },  {
+    "label" : "Eid al-Fitr 4"
+  },  {
+    "label" : "Eid al-Fitr 5"
   }
 ]
